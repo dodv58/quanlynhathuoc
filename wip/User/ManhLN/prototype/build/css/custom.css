@@ -3565,11 +3565,11 @@ form:after {
     margin: 10px 15px 0 0
 }
 .reset_pass {
-    margin-top: 10px !important
+    margin: 0 !important
 }
 .login_content div .reset_pass {
-    margin-top: 13px !important;
-    margin-right: 39px;
+    margin-top: 5px !important;
+    /*margin-right: 39px;*/
     float: right
 }
 .separator {
@@ -3588,7 +3588,9 @@ form:after {
     border-top: 1px solid #CFD5D9;
     padding: 15px 0
 }
-.login_content form input[type="submit"],
+.login_content form input[type="submit"] {
+    float: left;
+}
 #content form .submit {
     float: left;
     margin-left: 38px
