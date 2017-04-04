@@ -282,21 +282,21 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Tạo hóa đơn</h3>
+                <h3>Quản lý nhân viên</h3>
               </div>
             </div>
             <div class="clearfix"></div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                    <h2>Tên thuốc hoặc mã vạch</h2>
+                    <h2>Tìm kiếm</h2>
 					    <div class="form-group">
 							<div class="col-md-10 col-sm-10 col-xs-10">
 								<input id="middle-name" class="form-control" type="text" name="serial">
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-2">
 							<button class="btn btn-primary col-md-12 col-sm-12 col-xs-12" type="button">
-                                    <i class="fa fa-plus"></i> Thêm thuốc
+                                    Tìm
                                   </button>
 							</div>
                         </div>
@@ -307,42 +307,83 @@
                           <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Hóa đơn </h2>
+                    <h2>Nhân viên</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
+			
                     <table class="table">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Tên thuốc</th>
-                          <th>Số lượng bán</th>
-                          <th>Giá bán</th>
-                          <th>Thành tiền</th>
+                          <th>Nhân viên</th>
+                          <th>Account</th>
+                          <th>Chi nhánh</th>
+                          <th>Giờ làm việc</th>
+						  <th class="column-title no-link last" width="150"><span class="nobr">Chỉnh sửa/ Xóa</span>
+                            </th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <th scope="row">1</th>
-                          <td>AAAAAAAAAAAAAAAAAAA</td>
-                          <td><input id="middle-name" class="form-control" type="text" name="serial" style="text-align:right" value="1"></td>
-                          <td>1000</td>
-                          <td>1000</td>
+                          <td><a href="">Nguyễn Văn A</a></td>
+                          <td>NguyenVanA</td>
+                          <td>Chi nhánh A</td>
+                          <td>8:00 - 12:00</td>
+						  <td class="last">
+                              <a href="#" class="btn btn-xs btn-info">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                              <a href="#" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                            </td>
                         </tr>
                         <tr>
-                          <th scope="row">2</th>
-                          <td>AAAAAAAAAAAAAAAAAAA</td>
-                          <td><input id="middle-name" class="form-control" type="text" name="serial" style="text-align:right" value="1"></td>
-                          <td>1000</td>
-                          <td>1000</td>
+                          <th scope="row">1</th>
+                          <td><a href="">Nguyễn Văn B</a></td>
+                          <td>NguyenVanA</td>
+                          <td>Chi nhánh B</td>
+                          <td>8:00 - 12:00</td>
+						  <td class="last">
+                              <a href="#" class="btn btn-xs btn-info">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                              <a href="#" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                            </td>
                         </tr>
                         <tr>
                           <th scope="row">3</th>
-                          <td>AAAAAAAAAAAAAAAAAAA</td>
-                          <td><input id="middle-name" class="form-control" type="text" name="serial" style="text-align:right" value="1"></td>
-                          <td>1000</td>
-                          <td>1000</td>
+                          <td><a href="">Nguyễn Văn C</a></td>
+                          <td>NguyenVanA</td>
+                          <td>-</td>
+                          <td>-</td>
+						  <td class="last">
+                              <a href="#" class="btn btn-xs btn-info">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                              <a href="#" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                            </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">5</th>
+                          <td><a href="">Nguyễn Văn D</a></td>
+                          <td>NguyenVanD</td>
+                          <td>Chi nhánh B</td>
+                          <td>8:00 - 12:00</td>
+						  <td class="last">
+                              <a href="#" class="btn btn-xs btn-info">
+                                <i class="fa fa-pencil"></i>
+                              </a>
+                              <a href="#" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                            </td>
                         </tr>
                       </tbody>
                     </table>
@@ -351,58 +392,13 @@
                 </div>
               </div>
 			  
-			  
-			              <div class="row">
-                          <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Tổng tiền </h2>
-					<h2 class="pull-right" style="color:red">3000</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-				  
-				  	<div class="form-group">
-						<label for="middle-name" class="control-label">Tiền phải trả</label>
-						<label for="middle-name" class="control-label pull-right" style="padding-right: 15px">3000</label>
-					</div>
-					<div class="form-group">
-						<label for="middle-name" class="control-label">Khách đưa</label>
-						<div class="pull-right">
-						<input id="middle-name" class="form-control col-md-3" type="text" name="serial" style="text-align:right" value="10000">
-						</div>
-					</div>
-					
-				  	<div class="form-group">
-						<label for="middle-name" class="control-label">Tiền thừa</label>
-						<label for="middle-name" class="control-label pull-right" style="padding-right: 15px">6000</label>
-					</div>
-					
-				  	<div class="form-group">
-					
-							<button class="btn btn-success col-md-2 pull-right" type="button">
-                                   Thanh toán
-                                  </button>
-								  
-					</div>
-					
-                  </div>
-                </div>
-              </div>
-			  
-            </div>
           </div>
+		  <div class="row">
+		  <button type="submit" class="btn btn-success pull-right col-md-2 col-sm-2 col-xs-2" >Thêm</button>
+		  </div>
         </div>
         <!-- /page content -->
 
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
       </div>
     </div>
 
