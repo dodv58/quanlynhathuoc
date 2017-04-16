@@ -27,6 +27,7 @@ class CreateMedicDatabase extends Migration
 
         Schema::create('sub_pharmacies', function (Blueprint $table){
             $table->increments('id');
+            $table->string('name', 45);
             $table->unsignedInteger('pharmacy_id');
             $table->string('address');
             $table->string('phone', 15);
