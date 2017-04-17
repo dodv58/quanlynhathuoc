@@ -69,8 +69,8 @@ class ProductController extends Controller
                     $product["product_id"] = $productObj->id;
                     $product["bill_import_id"] = $billImport->id;
                     $product["input_quantity"] = $product["quantity"];
-                    $product["expire_date"] = Carbon::createFromFormat("d-m-Y", $product["expire_date"]);
-                    $product["manufactured_date"] = Carbon::createFromFormat("d-m-Y", $product["manufactured_date"]);
+                    $product["expire_date"] = !empty($product["expire_date"]) ? Carbon::createFromFormat("d-m-Y", $product["expire_date"]) : null;
+                    $product["manufactured_date"] = !empty($product["manufactured_date"]) ? Carbon::createFromFormat("d-m-Y", $product["manufactured_date"]) : null;
                     $product["input_quantity"] = $product["quantity"];
                     $product["created_at"] = Carbon::now();
                     array_push($shipments, $product);

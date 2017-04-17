@@ -2230,11 +2230,15 @@ ul.parsley-errors-list {
     color: #E74C3C;
     padding-left: 0
 }
-input.parsley-error,
-textarea.parsley-error,
-select.parsley-error {
+input.parsley-error,input.error,
+textarea.parsley-error,textarea.error,
+select.parsley-error,select.error {
     background: #FAEDEC;
     border: 1px solid #E85445
+}
+label.error{
+    color: red;
+    font-weight: normal;
 }
 .btn-group .parsley-errors-list {
     display: none

@@ -2,6 +2,16 @@
 
 @section('cssLib')
     {{-- add css here --}}
+    <style>
+        body {
+            counter-reset: Serial; /* Set the Serial counter to 0 */
+        }
+
+        tbody tr th:first-child:before {
+            counter-increment: Serial; /* Increment the Serial counter */
+            content: counter(Serial); /* Display the counter */
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -22,7 +32,8 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <form id="form-add-product" data-parsley-validate class="form-horizontal form-label-left">
+                            <form id="form-add-product" data-parsley-validate class="form-horizontal form-label-left"
+                                  novalidate>
                                 <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Tên Thuốc
@@ -30,7 +41,7 @@
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <input type="text" id="txtProductName" name="productName"
-                                                   required="required"
+                                                   required
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                     </div>
@@ -90,7 +101,7 @@
                                                     class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" id="txtQuantity" required="required"
+                                            <input type="text" id="txtQuantity" required="required" name="quantity"
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                     </div>
@@ -138,7 +149,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-danger" type="button" id="btnClear">Hủy</button>
+                                        <button class="btn btn-danger" type="reset" id="btnClear">Hủy</button>
                                         <button type="button" id="btnAddProduct" class="btn btn-success">Thêm thuốc
                                         </button>
                                     </div>
@@ -177,7 +188,7 @@
                             </table>
                             <div class="ln_solid"></div>
                             <div class="col-md-5 col-sm-12 col-xs-12 pull-right">
-                                <form action="{{url('product/add-stocks')}}" method="post"
+                                <form id="form-add-stock" action="{{url('product/add-stocks')}}" method="post"
                                       class="form-horizontal form-label-left">
                                     {{csrf_field()}}
                                     <input type="hidden" id="txtProducts" name="products" value="">
@@ -185,9 +196,9 @@
                                         <label for="middle-name"
                                                class="control-label col-md-4 col-sm-4 col-xs-12 pull-left">
                                             Tổng tiền </label>
-                                        <label for="middle-name"
+                                        <label for="middle-name" id="lbTotalAmount"
                                                class="control-label col-md-6 col-sm-6 col-xs-12 pull-right"
-                                               style="color: red">3000</label>
+                                               style="color: red">0</label>
                                     </div>
                                     <div class="form-group">
                                         <label for="middle-name"
@@ -202,10 +213,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-success col-md-3 pull-right" type="submit">
+                                        <button class="btn btn-success col-md-3 pull-right" type="button"
+                                                id="btnSubmitStock">
                                             Nhập Kho
                                         </button>
-                                        <button class="btn btn-danger col-md-3 pull-right" type="button">
+                                        <button class="btn btn-danger col-md-3 pull-right" type="button" id="btnRemoveAll">
                                             Xóa toàn bộ
                                         </button>
                                     </div>
@@ -222,40 +234,112 @@
 @section('jsLib')
     {{-- add js here--}}
     <script src="{{ asset('vendors/jquery-autocomplete/jquery.autocomplete.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
     <script>
-                {{--var suggestion = {!! $suggestion !!};--}}
-        var products = [];
-        $("#btnAddProduct").click(function (e) {
-            var product = {};
-            product["name"] = $("#txtProductName").val();
-            product["category_id"] = $("#ddlCategoryId").val();
-            product["input_unit"] = $("#ddlInputUnit").val();
-            product["sale_unit"] = $("#ddlSaleUnit").val();
-            product["exchange_value"] = $("#txtExchangeValue").val();
-            product["quantity"] = $("#txtQuantity").val();
-            product["input_price"] = $("#txtInputPrice").val();
-            product["sale_price"] = $("#txtSalePrice").val();
-            product["manufactured_date"] = $("#txtManufacturedDate").val();
-            product["expire_date"] = $("#txtExpireDate").val();
 
-            if (products.length === 0) {
-                $("table#productTable tbody").html("");
+        var addProductValidator = $("#form-add-product").validate({
+            rules: {
+                productName: {
+                    required: true
+                },
+                exchangeValue: {
+                    required: true,
+                    digits: true
+                },
+                quantity: {
+                    required: true,
+                    digits: true
+                },
+                inputPrice: {
+                    required: true,
+                    digits: true
+                },
+                salePrice: {
+                    required: true,
+                    digits: true
+                }
             }
-            $("table#productTable tbody").append(createProductRowHtml(product, products.length + 1));
-            products.push(product);
-            $("#txtProducts").val(JSON.stringify(products));
+        });
+        var products = [];
+        var totalAmount = 0;
+        $("#btnAddProduct").click(function (e) {
+            if ($('#form-add-product').valid()) {
+                var product = {};
+                product["name"] = $("#txtProductName").val();
+                product["category_id"] = $("#ddlCategoryId").val();
+                product["input_unit"] = $("#ddlInputUnit").val();
+                product["sale_unit"] = $("#ddlSaleUnit").val();
+                product["exchange_value"] = $("#txtExchangeValue").val();
+                product["quantity"] = $("#txtQuantity").val();
+                product["input_price"] = $("#txtInputPrice").val();
+                product["sale_price"] = $("#txtSalePrice").val();
+                product["manufactured_date"] = $("#txtManufacturedDate").val();
+                product["expire_date"] = $("#txtExpireDate").val();
+
+                if (products.length === 0) {
+                    $("table#productTable tbody").html("");
+                }
+                $("table#productTable tbody").append(createProductRowHtml(product));
+                totalAmount += product["input_price"] * product["quantity"];
+                updateTotalAmount(totalAmount);
+                products.push(product);
+                updateProductInput();
+                resetAddForm();
+            }
+
         });
 
-        function createProductRowHtml(product, index) {
+        $("#btnClear").click(function (e) {
+            resetAddForm();
+        });
+
+        $("#btnSubmitStock").click(function (e) {
+            if (products.length === 0) {
+                swal({
+                    title: "Lỗi",
+                    text: "Không có sản phẩm nhập kho",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonText: "Thêm sản phẩm",
+                    closeOnConfirm: false
+                });
+                return;
+            }
+            swal({
+                    title: "Xác nhận nhập kho",
+//                    text: "Tạo phiếu nhập kho",
+                    type: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: "Hủy bỏ",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Đồng ý",
+                    closeOnConfirm: true,
+                    showLoaderOnConfirm: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $("#form-add-stock").submit();
+                    }
+                });
+        });
+
+        function resetAddForm() {
+            addProductValidator.resetForm();
+            $("#form-add-product")[0].reset();
+        }
+
+        function createProductRowHtml(product) {
+            var amount = product["input_price"] * product["quantity"];
             var html = '<tr>';
-            html += '<th scope="row">' + index + '</th>';
+            html += '<th scope="row"></th>';
             html += '<td>' + product["name"] + '</td>';
             html += '<td>' + product["input_unit"] + '</td>';
             html += '<td>' + product["sale_unit"] + '</td>';
             html += '<td>' + product["quantity"] + '</td>';
             html += '<td>' + product["input_price"] + '</td>';
             html += '<td>' + product["sale_price"] + '</td>';
-            html += '<td>Xóa</td>';
+            html += '<td><button class="btn btn-xs btn-danger btnRemoveProduct" data-amount="' + amount + '" data-name="' + product["name"] + '">Xóa</button></td>';
             html += '</tr>';
 
             return html;
@@ -279,6 +363,24 @@
             }
         });
 
+        $(document).on("click", "button.btnRemoveProduct", function (e) {
+            totalAmount -= $(this).data("amount");
+            var name = $(this).data("name");
+            updateTotalAmount(totalAmount);
+            products = products.filter(function(el) {
+                return el["name"] !== name;
+            });
+            updateProductInput();
+            $(this).closest('tr').remove();
+        });
+        
+        $("#btnRemoveAll").click(function (e) {
+            totalAmount = 0;
+            products = [];
+            updateProductInput(totalAmount);
+            $("table#productTable tbody").html('<td colspan="8">Chưa có thuốc được thêm</td>');
+        });
+
         function init_daterangepicker() {
 
             if (typeof ($.fn.daterangepicker) === 'undefined') {
@@ -289,12 +391,24 @@
             $('.date-picker').daterangepicker({
                 singleDatePicker: true,
                 singleClasses: "picker_1",
+                autoUpdateInput: false,
+//                autoApply: true,
                 locale: {
                     format: 'DD-MM-YYYY'
                 }
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
             });
+
+            $('.date-picker').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY'));
+            });
+        }
+
+        function updateTotalAmount(totalAmount) {
+            $("label#lbTotalAmount").text(totalAmount);
+        }
+
+        function updateProductInput() {
+            $("#txtProducts").val(JSON.stringify(products));
         }
 
         init_daterangepicker();
