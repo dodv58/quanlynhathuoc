@@ -15,11 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pharmacy_id');
-            $table->unsignedInteger('sub_pharmacy_id');
+            $table->unsignedInteger('pharmacy_id')->nullable();
+            $table->unsignedInteger('sub_pharmacy_id')->nullable();
             $table->string('account')->unique();
             $table->string('email');
-            $table->string('password', 45);
+            $table->string('password', 100);
             $table->string('name');
             $table->string('address');
             $table->string('phone', 15)->nullable();

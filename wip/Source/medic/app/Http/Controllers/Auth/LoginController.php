@@ -44,4 +44,22 @@ class LoginController extends Controller
     public function username() {
         return 'account';
     }
+
+
+    public function showLoginView(){
+        return view('auth/login');
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+        return redirect('login');
+    }
+
+    public function login(){
+        if(! auth()->attempt(request(['account', 'password']))){
+            return back();
+        }
+        return redirect()->home();
+    }
 }

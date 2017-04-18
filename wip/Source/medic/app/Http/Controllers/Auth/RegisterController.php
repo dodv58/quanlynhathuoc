@@ -60,12 +60,24 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
+    protected function store()
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'account' => request('account'),
+            'address' => request('address'),
+            'phone' => request('phone'),
+            'password' => bcrypt(request('password')),
+            'role' => 1
         ]);
+
+        auth()->login($user);
+        return redirect('pharmacy-register');
+    }
+
+    public function create(){
+        return view('auth/register');
     }
 }
