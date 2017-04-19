@@ -16,12 +16,12 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('pharmacy_id');
-            $table->unsignedInteger('sub_pharmacy_id');
+            $table->unsignedInteger('sub_pharmacy_id')->nullable();
             $table->string('account')->unique();
             $table->string('email');
-            $table->string('password', 45);
+            $table->string('password');
             $table->string('name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('phone', 15)->nullable();
             $table->boolean('role'); // use boolean for tinyint(1)
             $table->rememberToken();

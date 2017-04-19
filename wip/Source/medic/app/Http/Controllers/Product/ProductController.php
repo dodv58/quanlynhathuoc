@@ -26,14 +26,43 @@ class ProductController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @internal param Request $request
      */
-    //    public function index()
-    //    {
-    //        return view('home');
-    //    }
+    public function index() {
+        $products = Product::join('categories', 'categories.id', '=', 'products.category_id')
+            ->join('shipments', 'shipments.product_id', '=', 'products.id')
+            ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
+            ->where('bill_imports.sub_pharmacy_id', 1)
+            ->groupBy('products.id')
+            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('count(*) as quantity'))->paginate(2);
+
+        $categories = Category::all();
+
+        return view('product.index')->with('data', ['products' => $products, 'categories' => $categories]);
+    }
+
+    public function detail($id) {
+
+        $shipments = Shipment::join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
+            ->where([
+                ['shipments.product_id', '=', $id],
+                ['bill_imports.sub_pharmacy_id', '=', 1],
+            ])->get();
+
+        $saleHistories = Shipment::join('bill_export_shipments', 'shipments.id', '=', 'bill_export_shipments.shipment_id')
+            ->join('bill_exports', 'bill_exports.id', '=', 'bill_export_shipments.bill_export_id')
+            ->join('users', 'users.id', '=', 'bill_exports.creator_id')
+            ->where([
+                ['shipments.product_id', '=', $id],
+                ['bill_exports.sub_pharmacy_id', '=', 1],
+            ])
+            ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'bill_export_shipments.bill_export_id',
+                'bill_export_shipments.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
+            ->get();
+
+        return view('product.detail')->with('data', ['shipments' => $shipments, 'saleHistories' => $saleHistories]);
+    }
 
     public function addStocks(Request $request) {
         if ($request->isMethod('post')) {
@@ -113,6 +142,7 @@ class ProductController extends Controller
                     'total_amount' => $totalAmount,
                     'received_amount' => $receivedAmount,
                     'customer_name' => '',
+                    'created_at' => Carbon::now(),
                 ]);
 
                 foreach ($shipments as $shipment) {
