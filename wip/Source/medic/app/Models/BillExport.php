@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillExport extends Model
 {
+    public $timestamps = false;
+    protected $guarded = [];
+
     public function creator(){
         return $this->belongsTo('App\Models\User', 'creator_id');
     }

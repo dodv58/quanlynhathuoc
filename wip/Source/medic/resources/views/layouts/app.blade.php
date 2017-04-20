@@ -16,6 +16,7 @@
     <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/pace/pace.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
+
     <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
     @yield('cssLib')
     {{-- Custom Theme Style --}}
@@ -27,6 +28,8 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -34,7 +37,10 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{ url('/') }}" class="site_title"><i class="fa fa-medkit"></i> <span>Tên nhà thuốc!</span></a>
+                    <a href="{{ url('/') }}" class="site_title"><i class="fa fa-medkit"></i>
+                        <span>@if(Auth::check() && \App\Models\Pharmacy::find(auth()->user()->pharmacy_id))
+                                  {{ \App\Models\Pharmacy::find(auth()->user()->pharmacy_id)->name }}
+                            @endif</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -46,7 +52,9 @@
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
-                        <h2>John Doe</h2>
+                        @if(Auth::check())
+                        <h2>{{ auth()->user()->name }}</h2>
+                        @endif
                     </div>
                 </div>
                 <!-- /menu profile quick info -->
@@ -62,14 +70,20 @@
                             </li>
                             <li><a><i class="fa fa-line-chart"></i> Báo cáo <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
+                            <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-table"></i> Chi nhánh <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="#">Chi nhánh 1</a></li>
-                                    <li><a href="#">Chi nhánh 2</a></li>
-                                    <li><a href="#">Chi nhánh 3</a></li>
+                                    @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get()  as $agency)
+                                        <li><a href="/agency/{{ $agency->id }}">Chi nhánh {{ $agency->name }}</a></li>
+                                    @endforeach
+
+                                    <li><a href="/agency/add"><i class="fa fa-plus"></i>Thêm chi nhánh</a></li>
                                 </ul>
+                            </li>
+                            <li><a href="/employee"><i class="fa fa-clone"></i> Nhân viên <span class="nav child_menu"></span></a>
+                            </li>
+                            <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
                             </li>
@@ -91,9 +105,10 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
+                            @if(Auth::check())
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="{{asset('images/img.jpg')}}" alt="">John Doe
+                                <img src="{{asset('images/img.jpg')}}" alt="">{{ auth()->user()->name }}
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -106,6 +121,7 @@
                                 <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                                 </li>
                             </ul>
+                            @endif
                         </li>
 
 

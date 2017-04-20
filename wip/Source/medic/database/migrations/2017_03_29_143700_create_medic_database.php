@@ -77,7 +77,7 @@ class CreateMedicDatabase extends Migration
             $table->string('input_unit', 10);
             $table->unsignedBigInteger('sale_price');
             $table->string('sale_unit', 10);
-            $table->unsignedInteger('conversion_value')->default(1);
+            $table->unsignedInteger('exchange_value')->default(1);
             $table->unsignedInteger('input_quantity');
             $table->unsignedInteger('quantity');
             $table->timestamp('created_at')->nullable();
@@ -89,11 +89,12 @@ class CreateMedicDatabase extends Migration
             $table->unsignedInteger('sub_pharmacy_id');
             $table->unsignedInteger('creator_id');
             $table->unsignedBigInteger('total_amount');
+            $table->unsignedBigInteger('received_amount');
             $table->string('customer_name')->nullable();
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('bill_export_shipment', function (Blueprint $table){
+        Schema::create('bill_export_shipments', function (Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('bill_export_id');
             $table->unsignedInteger('shipment_id');
@@ -118,5 +119,6 @@ class CreateMedicDatabase extends Migration
         Schema::dropIfExists('categories');
         Schema::dropIfExists('sub_pharmacies');
         Schema::dropIfExists('pharmacies');
+        Schema::dropIfExists('bill_export_shipments');
     }
 }

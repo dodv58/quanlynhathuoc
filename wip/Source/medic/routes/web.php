@@ -17,33 +17,45 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'Home\HomeController@index');
+Route::get('/home', 'Home\HomeController@index')->name('home');
+/*Product management actions*/
+Route::get('/product', 'Product\ProductController@index');
+Route::get('/product/detail/{id}', 'Product\ProductController@detail');
 Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
+Route::post('/product/add-stocks', 'Product\ProductController@addStocks');
 Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
 Route::post('/product/add-product', 'Product\ProductController@addProduct');
+Route::get('/product/sale', 'Product\ProductController@sale');
+Route::post('/product/sale', 'Product\ProductController@sale');
+Route::get('/product/find-products', 'Product\ProductController@findByShipments');
 
 
 
-Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
-Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
-Route::post('/product/add-product', 'Product\ProductController@addProduct');
+Route::get('/employee', 'Employee\EmployeeController@employee');
+Route::get('/employee/add', 'Employee\EmployeeController@addEmployee');
+Route::get('/employee/check-employee-existed', 'Employee\EmployeeController@checkEmployeeExisted');
+Route::get('/employee/{account}/edit', 'Employee\EmployeeController@editEmployee');
+Route::post('/employee/{account}/edit', 'Employee\EmployeeController@updateEmployee');
+Route::post('/employee', 'Employee\EmployeeController@storeEmployee');
 
-Route::get('/home/employee', 'Employee\EmployeeController@employee');
-Route::get('/home/employee/add', 'Employee\EmployeeController@addEmployee');
-Route::get('/home/employee/check-employee-existed', 'Employee\EmployeeController@checkEmployeeExisted');
-Route::get('/home/employee/{account}/edit', 'Employee\EmployeeController@editEmployee');
-Route::post('/home/employee/{account}/edit', 'Employee\EmployeeController@updateEmployee');
-Route::post('/home/employee', 'Employee\EmployeeController@storeEmployee');
-
-Route::get('/home/employee/{account}', 'Employee\EmployeeController@deleteEmployee')->name('deleteUser');
+Route::get('/employee/{account}', 'Employee\EmployeeController@deleteEmployee')->name('deleteUser');
 
 
 
-Route::get('/home/agency/add', 'Home\HomeController@addAgency');
-Route::get('home/agency', 'Home\HomeController@showAgencies');
-Route::get('/home/agency/{id}/addemployee', 'Home\HomeController@showAddEmployee');
-Route::get('/home/agency/{id}', 'Home\HomeController@showAgency');
-Route::post('/home/agency', 'Home\HomeController@storeAgency');
-Route::get('/home/agencyAddEmployee/{id}', 'Home\HomeController@agencyAddEmployee');
+Route::get('/agency/add', 'Agency\AgencyController@addAgency');
+Route::get('/agency', 'Agency\AgencyController@showAgencies');
+Route::get('/agency/{id}/addemployee', 'Agency\AgencyController@showAddEmployee');
+Route::get('/agency/{id}', 'Agency\AgencyController@showAgency');
+Route::post('/agency', 'Agency\AgencyController@storeAgency');
+Route::get('/agencyAddEmployee/{id}', 'Agency\AgencyController@agencyAddEmployee');
 
-Route::get('/home/create-bill', 'Home\HomeController@createBill');
+Route::get('/create-bill', 'Home\HomeController@createBill');
+
+
+Route::get('login', 'Auth\LoginController@showLoginView')->name('login');
+Route::post('login', 'Auth\LoginController@login')->name('login');
+Route::get('register', 'Auth\RegisterController@create');
+Route::post('register', 'Auth\RegisterController@store')->name('register');
+Route::get('pharmacy-register', 'Home\HomeController@showPharmacyRegister');
+Route::post('pharmacy-register', 'Home\HomeController@storePharmacy')->name('pharmacy-register');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
