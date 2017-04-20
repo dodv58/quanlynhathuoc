@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillImport extends Model
 {
+    protected $guarded = [];
+
     public function creator(){
         $this->belongsTo('App\Models\User', 'creator_id');
     }

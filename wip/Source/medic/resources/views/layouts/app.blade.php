@@ -70,7 +70,7 @@
                             </li>
                             <li><a><i class="fa fa-line-chart"></i> Báo cáo <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
+                            <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-table"></i> Chi nhánh <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
@@ -83,7 +83,7 @@
                             </li>
                             <li><a href="/employee"><i class="fa fa-clone"></i> Nhân viên <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a href="/create-bill"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
+                            <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
                             </li>

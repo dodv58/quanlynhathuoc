@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             $newUser->sub_pharmacy_id = SubPharmacy::where(['name' => request('agency')])->first()->id;
             $newUser->account = request('account');
             $newUser->email = request('email');
-            $newUser->password = "123456";
+            $newUser->password = bcrypt("123456");
             $newUser->name = request('name');
             $newUser->address = request('address');
             $newUser->phone = request('phone');

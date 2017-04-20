@@ -18,11 +18,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'Home\HomeController@index')->name('home');
+/*Product management actions*/
+Route::get('/product', 'Product\ProductController@index');
+Route::get('/product/detail/{id}', 'Product\ProductController@detail');
 Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
+Route::post('/product/add-stocks', 'Product\ProductController@addStocks');
 Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
 Route::post('/product/add-product', 'Product\ProductController@addProduct');
-
-
+Route::get('/product/sale', 'Product\ProductController@sale');
+Route::post('/product/sale', 'Product\ProductController@sale');
+Route::get('/product/find-products', 'Product\ProductController@findByShipments');
 
 Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
 Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
