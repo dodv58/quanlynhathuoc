@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pharmacy_id');
+            $table->unsignedInteger('pharmacy_id')->nullable();
             $table->unsignedInteger('sub_pharmacy_id')->nullable();
             $table->string('account')->unique();
             $table->string('email');
