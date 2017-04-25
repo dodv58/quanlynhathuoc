@@ -20,7 +20,7 @@ class ProductController extends Controller
      *
      */
     public function __construct() {
-        //        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -34,7 +34,7 @@ class ProductController extends Controller
             ->join('shipments', 'shipments.product_id', '=', 'products.id')
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where('bill_imports.sub_pharmacy_id', 1)
-            ->groupBy('products.id')
+            ->groupBy('products.id', 'products.name', 'categories.name')
             ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('count(*) as quantity'))->paginate(2);
 
         $categories = Category::all();
