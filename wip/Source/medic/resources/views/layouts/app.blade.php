@@ -39,7 +39,7 @@
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="{{ url('/') }}" class="site_title"><i class="fa fa-medkit"></i>
                         <span>@if(Auth::check() && \App\Models\Pharmacy::find(auth()->user()->pharmacy_id))
-                                  {{ \App\Models\Pharmacy::find(auth()->user()->pharmacy_id)->name }}
+                                {{ \App\Models\Pharmacy::find(auth()->user()->pharmacy_id)->name }}
                             @endif</span></a>
                 </div>
 
@@ -53,7 +53,7 @@
                     <div class="profile_info">
                         <span>Welcome,</span>
                         @if(Auth::check())
-                        <h2>{{ auth()->user()->name }}</h2>
+                            <h2>{{ auth()->user()->name }}</h2>
                         @endif
                     </div>
                 </div>
@@ -106,21 +106,21 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             @if(Auth::check())
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <img src="{{asset('images/img.jpg')}}" alt="">{{ auth()->user()->name }}
-                                <span class=" fa fa-angle-down"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="javascript:;"> Profile</a></li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span>Thiết lập</span>
-                                    </a>
-                                </li>
-                                <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                                </li>
-                            </ul>
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="{{asset('images/img.jpg')}}" alt="">{{ auth()->user()->name }}
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span>Thiết lập</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                    </li>
+                                </ul>
                             @endif
                         </li>
 
@@ -152,6 +152,7 @@
 <script src="{{ asset('vendors/pace/pace.min.js') }}"></script>
 <script src="{{ asset('vendors/moment/moment.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
 @yield('jsLib')
 {{-- Custom Theme Scripts --}}
 <script src="{{ asset('js/common.js') }}"></script>

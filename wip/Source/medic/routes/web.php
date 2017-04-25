@@ -29,9 +29,7 @@ Route::get('/product/sale', 'Product\ProductController@sale');
 Route::post('/product/sale', 'Product\ProductController@sale');
 Route::get('/product/find-products', 'Product\ProductController@findByShipments');
 
-Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
-Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
-Route::post('/product/add-product', 'Product\ProductController@addProduct');
+
 
 Route::get('/employee', 'Employee\EmployeeController@employee');
 Route::get('/employee/add', 'Employee\EmployeeController@addEmployee');
@@ -61,3 +59,5 @@ Route::post('register', 'Auth\RegisterController@store')->name('register');
 Route::get('pharmacy-register', 'Home\HomeController@showPharmacyRegister');
 Route::post('pharmacy-register', 'Home\HomeController@storePharmacy')->name('pharmacy-register');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('example', 'Home\HomeController@example');
