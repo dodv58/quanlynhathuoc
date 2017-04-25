@@ -1,36 +1,5 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/pace/pace.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
-    {{-- Custom Theme Style --}}
-    <link href="{{ asset('css/common.css') }}" rel="stylesheet">
-
-    <!-- Scripts -->
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-
-</head>
-<body class="nav-md">
+@extends('layouts.app-default')
+@section('content')
 <div class="container body">
     <div class="main_container">
         <div class="row">
@@ -147,14 +116,4 @@
     </div>
 </div>
 
-<!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('vendors/fastclick/lib/fastclick.js') }}"></script>
-<script src="{{ asset('vendors/pace/pace.min.js') }}"></script>
-<script src="{{ asset('vendors/moment/moment.js') }}"></script>
-<script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-{{-- Custom Theme Scripts --}}
-<script src="{{ asset('js/common.js') }}"></script>
-</body>
-</html>
-
+@endsection

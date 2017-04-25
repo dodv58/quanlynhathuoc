@@ -59,3 +59,5 @@ Route::post('register', 'Auth\RegisterController@store')->name('register');
 Route::get('pharmacy-register', 'Home\HomeController@showPharmacyRegister');
 Route::post('pharmacy-register', 'Home\HomeController@storePharmacy')->name('pharmacy-register');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('example', 'Home\HomeController@example');

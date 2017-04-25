@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pharmacy extends Model
 {
+
+    protected $fillable = [
+        'name', 'account', 'address', 'phone', 'email', 'owner_name'
+    ];
+
     public function users(){
         return $this->hasMany('App\Models\User');
     }
