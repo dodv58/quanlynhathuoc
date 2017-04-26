@@ -16,8 +16,9 @@
     <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/pace/pace.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-
     <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/sweet-alert/sweetalert.css') }}" rel="stylesheet">
+
     @yield('cssLib')
     {{-- Custom Theme Style --}}
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
@@ -163,6 +164,7 @@
 <script src="{{ asset('vendors/pace/pace.min.js') }}"></script>
 <script src="{{ asset('vendors/moment/moment.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('vendors/sweet-alert/sweetalert.js') }}"></script>
 
 @yield('jsLib')
 {{-- Custom Theme Scripts --}}

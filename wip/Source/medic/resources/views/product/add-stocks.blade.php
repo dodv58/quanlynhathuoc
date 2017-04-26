@@ -236,7 +236,6 @@
     <script src="{{ asset('vendors/jquery-autocomplete/jquery.autocomplete.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
-    <script src="{{ asset('vendors/sweet-alert/sweetalert.js') }}"></script>
     <script>
 
         var addProductValidator = $("#form-add-product").validate({

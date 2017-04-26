@@ -78,18 +78,19 @@
                                 <table class="table table-striped jambo_table bulk_action">
                                     <thead>
                                     <tr class="headings">
-                                        <th>
-                                            <input type="checkbox" id="check-all" class="flat">
-                                        </th>
+                                        {{--<th>--}}
+                                            {{--<input type="checkbox" id="check-all" class="flat">--}}
+                                        {{--</th>--}}
+                                        <th class="column-title">#</th>
                                         <th class="column-title">Tên hàng</th>
                                         <th class="column-title">Loại hàng</th>
                                         <th class="column-title">Tồn kho</th>
                                         <th class="column-title no-link last"><span class="nobr">Action</span>
                                         </th>
-                                        <th class="bulk-actions" colspan="7">
-                                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span
-                                                        class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                        </th>
+                                        {{--<th class="bulk-actions" colspan="7">--}}
+                                            {{--<a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span--}}
+                                                        {{--class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>--}}
+                                        {{--</th>--}}
                                     </tr>
                                     </thead>
 
@@ -97,16 +98,18 @@
                                     @foreach($products as $product)
                                         @php
                                             $classes = $loop->index % 2 === 0 ? "even" : "odd";
+                                            $index = $products->firstItem() + $loop->index;
                                         @endphp
                                         <tr class="{{$classes}} pointer">
-                                            <td class="a-center">
-                                                <input type="checkbox" class="flat" name="table_records">
-                                            </td>
+                                            {{--<td class="a-center">--}}
+                                                {{--<input type="checkbox" class="flat" name="table_records">--}}
+                                            {{--</td>--}}
+                                            <td class=" "><b>{{$index}}</b></td>
                                             <td class=" ">{{$product["name"]}}</td>
                                             <td class=" ">{{$product["category_name"]}}</td>
                                             <td class=" ">{{$product["quantity"]}}</td>
                                             <td class="last">
-                                                <a href="#" class="btn btn-xs btn-info">
+                                                <a href="{{url('product/detail/' . $product['id'])}}" class="btn btn-xs btn-info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a href="#" class="btn btn-xs btn-danger">
