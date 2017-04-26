@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Shipment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -33,9 +34,9 @@ class ProductController extends Controller
         $products = Product::join('categories', 'categories.id', '=', 'products.category_id')
             ->join('shipments', 'shipments.product_id', '=', 'products.id')
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
-            ->where('bill_imports.sub_pharmacy_id', 1)
+            ->where('bill_imports.sub_pharmacy_id', Auth::user()->sub_pharmacy_id)
             ->groupBy('products.id', 'products.name', 'categories.name')
-            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('count(*) as quantity'))->paginate(2);
+            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('count(*) as quantity'))->paginate(20);
 
         $categories = Category::all();
 
@@ -47,7 +48,7 @@ class ProductController extends Controller
         $shipments = Shipment::join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where([
                 ['shipments.product_id', '=', $id],
-                ['bill_imports.sub_pharmacy_id', '=', 1],
+                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])->get();
 
         $saleHistories = Shipment::join('bill_export_shipments', 'shipments.id', '=', 'bill_export_shipments.shipment_id')
@@ -55,7 +56,7 @@ class ProductController extends Controller
             ->join('users', 'users.id', '=', 'bill_exports.creator_id')
             ->where([
                 ['shipments.product_id', '=', $id],
-                ['bill_exports.sub_pharmacy_id', '=', 1],
+                ['bill_exports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])
             ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'bill_export_shipments.bill_export_id',
                 'bill_export_shipments.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
@@ -76,8 +77,8 @@ class ProductController extends Controller
                     [
                         'code' => '',
                         'total_amount' => $totalAmount,
-                        'creator_id' => 1,
-                        'sub_pharmacy_id' => 1,
+                        'creator_id' => Auth::id(),
+                        'sub_pharmacy_id' => Auth::user()->sub_pharmacy_id,
                     ]
                 );
 
@@ -89,8 +90,8 @@ class ProductController extends Controller
                             'name' => $product["name"],
                             'price' => $product["sale_price"],
                             'category_id' => $product["category_id"],
-                            'pharmacy_id' => 0,
-                            'creator_id' => 0,
+                            'pharmacy_id' => Auth::user()->pharmacy_id,
+                            'creator_id' => Auth::id(),
                         ]);
                     }
                     unset($product["category_id"]);
@@ -137,8 +138,8 @@ class ProductController extends Controller
                 DB::beginTransaction();
                 $billExport = BillExport::create([
                     'code' => '',
-                    'sub_pharmacy_id' => 1,
-                    'creator_id' => 1,
+                    'sub_pharmacy_id' => Auth::user()->sub_pharmacy_id,
+                    'creator_id' => Auth::id(),
                     'total_amount' => $totalAmount,
                     'received_amount' => $receivedAmount,
                     'customer_name' => '',
