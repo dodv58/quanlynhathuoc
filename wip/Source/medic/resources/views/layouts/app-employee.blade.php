@@ -64,41 +64,14 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section">
-                        @if(auth()->user()->role == 1)
                         <ul class="nav side-menu">
-                            <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Tổng quan <span
-                                            class="nav child_menu"></span></a>
-                            </li>
-                            {{--<li><a><i class="fa fa-line-chart"></i> Báo cáo <span class="nav child_menu"></span></a>--}}
-                            {{--</li>--}}
-                            <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
-                            </li>
-                            <li><a><i class="fa fa-table"></i> Chi nhánh <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get()  as $agency)
-                                        <li><a href="/agency/{{ $agency->id }}">Chi nhánh {{ $agency->name }}</a></li>
-                                    @endforeach
-
-                                    <li><a href="/agency/add"><i class="fa fa-plus"></i>Thêm chi nhánh</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="/employee"><i class="fa fa-clone"></i> Nhân viên <span class="nav child_menu"></span></a>
-                            </li>
                             <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
+                            </li>
+                            <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
                             </li>
                         </ul>
-                        @else
-                            <ul class="nav side-menu">
-                                <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
-                                </li>
-                                <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
-                                </li>
-                                <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
-                                </li>
-                            </ul>
-                        @endif
                     </div>
                 </div>
                 <!-- /sidebar menu -->
@@ -149,7 +122,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Quản lý nhà thuốc - by <a href="javascript:;"> HT team</a>
+                Quản lý nhà thuốc - by <a href="javascript:;">abc team</a>
             </div>
             <div class="clearfix"></div>
         </footer>

@@ -25,7 +25,7 @@ Route::get('/product/add-stocks', 'Product\ProductController@addStocks');
 Route::post('/product/add-stocks', 'Product\ProductController@addStocks');
 Route::get('/product/suggest-products', 'Product\ProductController@suggestProducts');
 Route::post('/product/add-product', 'Product\ProductController@addProduct');
-Route::get('/product/sale', 'Product\ProductController@sale');
+Route::get('/product/sale', 'Product\ProductController@sale')->name('sale');
 Route::post('/product/sale', 'Product\ProductController@sale');
 Route::get('/product/find-products', 'Product\ProductController@findByShipments');
 

@@ -76,7 +76,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="agency" name="agency" required="required">
                                         @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)
-                                            <option>{{ $agency->name }}</option>
+                                            <option value="{{ $agency->id }}">{{ $agency->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

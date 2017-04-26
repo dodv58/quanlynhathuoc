@@ -39,7 +39,7 @@
                                 <h2>Hàng hóa</h2>
                             </div>
                             <div class="pull-right">
-                                <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Nhập kho</button>
+                                <a href="/product/add-stocks"><button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Nhập kho</button></a>
                                 <button class="btn btn-sm btn-success"><i class="fa fa-sign-out"></i> Xuất file</button>
                                 <!--<button class="btn btn-sm btn-success">
                                   <i class="fa fa-list"></i> <i class="fa fa-caret-up"></i>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\SubPharmacy;
+use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class EmployeeController extends Controller
 {
@@ -35,20 +37,34 @@ class EmployeeController extends Controller
     public function storeEmployee() {
 
         $user = User::where('account', request('account'))->first();
-        if (!$user) {
-            $newUser = new User;
-            $newUser->pharmacy_id = auth()->user()->pharmacy_id;
-            $newUser->sub_pharmacy_id = SubPharmacy::where(['name' => request('agency')])->first()->id;
-            $newUser->account = request('account');
-            $newUser->email = request('email');
-            $newUser->password = bcrypt("123456");
-            $newUser->name = request('name');
-            $newUser->address = request('address');
-            $newUser->phone = request('phone');
-            $newUser->role = 1;
+        try {
+            DB::beginTransaction();
+            if (!$user) {
+                $newUser = new User;
+                $newUser->pharmacy_id = auth()->user()->pharmacy_id;
+                $newUser->sub_pharmacy_id = \request('agency');
+                $newUser->account = request('account');
+                $newUser->email = request('email');
+                $newUser->password = bcrypt("123456");
+                $newUser->name = request('name');
+                $newUser->address = request('address');
+                $newUser->phone = request('phone');
+                if (request('role') == 'Quản lý') {
+                    $newUser->role = 1;
+                } else {
+                    $newUser->role = 2;
+                }
 
-            $newUser->save();
+
+                $newUser->save();
+            }
+            DB::commit();
         }
+        catch (\Exception $ex){
+            DB::rollBack();
+            throw $ex;
+        }
+
 
         return redirect('/employee');
     }

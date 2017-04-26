@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -62,18 +63,25 @@ class RegisterController extends Controller
      */
     protected function store()
     {
+        try {
+            DB::beginTransaction();
+            $user = User::create([
+                'name' => request('name'),
+                'email' => request('email'),
+                'account' => request('account'),
+                'address' => request('address'),
+                'phone' => request('phone'),
+                'password' => bcrypt(request('password')),
+                'role' => 1
+            ]);
 
-        $user = User::create([
-            'name' => request('name'),
-            'email' => request('email'),
-            'account' => request('account'),
-            'address' => request('address'),
-            'phone' => request('phone'),
-            'password' => bcrypt(request('password')),
-            'role' => 1
-        ]);
-
-        auth()->login($user);
+            DB::commit();
+            auth()->login($user);
+        }
+        catch (\Exception $ex){
+            DB::rollBack();
+            throw $ex;
+        }
         return redirect('pharmacy-register');
     }
 
