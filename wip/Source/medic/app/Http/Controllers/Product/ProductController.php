@@ -111,7 +111,7 @@ class ProductController extends Controller
                     $product["input_quantity"] = $product["quantity"];
                     $product["expire_date"] = !empty($product["expire_date"]) ? Carbon::createFromFormat("d-m-Y", $product["expire_date"]) : null;
                     $product["manufactured_date"] = !empty($product["manufactured_date"]) ? Carbon::createFromFormat("d-m-Y", $product["manufactured_date"]) : null;
-                    $product["input_quantity"] = $product["quantity"];
+                    $product["quantity"] = $product["quantity"] * $product["exchange_value"];
                     $product["created_at"] = Carbon::now();
                     array_push($shipments, $product);
                 }
