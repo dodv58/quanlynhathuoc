@@ -230,7 +230,7 @@
                 },
                 function (isConfirm) {
                     if (isConfirm) {
-                        $("#form-add-stock").submit();
+                        $("#submitForm").submit();
                     }
                 });
         })

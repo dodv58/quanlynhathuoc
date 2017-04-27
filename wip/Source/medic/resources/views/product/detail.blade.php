@@ -3,6 +3,7 @@
 @php
     $shipments = $data['shipments'];
     $saleHistories = $data['saleHistories'];
+    $product = $data['product'];
 @endphp
 
 @section('cssLib')
@@ -26,7 +27,7 @@
                     <div class="x_panel">
                         <div class="x_title">
                             <div class="pull-left">
-                                <h2>Mã hàng: 121000040</h2>
+                                <h2>Tên sản phẩm: {{$product["name"]}}</h2>
                             </div>
                             <div class="pull-right">
                                 <button class="btn btn-sm btn-info"><i class="fa fa-pencil"></i> Cập nhật</button>
@@ -81,6 +82,7 @@
                                                             <tr class="headings">
                                                                 <th>#</th>
                                                                 <th class="column-title">Người bán</th>
+                                                                <th class="column-title">Lô/HSD</th>
                                                                 <th class="column-title">Số lượng</th>
                                                                 <th class="column-title">Giá bán</th>
                                                                 <th class="column-title">Ngày giờ</th>
@@ -96,6 +98,7 @@
                                                                 <tr class="{{$classes}} pointer">
                                                                     <td>{{$loop->iteration}}</td>
                                                                     <td>{{$saleHistory['creator_name']}}</td>
+                                                                    <td>{{\Carbon\Carbon::parse($saleHistory['expire_date'])->format('d-m-Y')}}</td>
                                                                     <td>{{$saleHistory['quantity']}}</td>
                                                                     <td>{{$saleHistory['sale_price']}}</td>
                                                                     <td>{{$saleHistory['created_at']}}</td>

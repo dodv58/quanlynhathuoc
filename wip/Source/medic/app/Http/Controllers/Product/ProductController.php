@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,7 @@ class ProductController extends Controller
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where('bill_imports.sub_pharmacy_id', Auth::user()->sub_pharmacy_id)
             ->groupBy('products.id', 'products.name', 'categories.name')
-            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('count(*) as quantity'))->paginate(20);
+            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'))->paginate(20);
 
         $categories = Category::all();
 
@@ -44,25 +45,34 @@ class ProductController extends Controller
     }
 
     public function detail($id) {
+        $product = Product::find($id);
+        if (empty($product)) {
+            throw new NotFoundHttpException();
+        }
 
         $shipments = Shipment::join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where([
                 ['shipments.product_id', '=', $id],
                 ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
-            ])->get();
+            ])->orderBy('shipments.created_at', 'desc')->get();
 
-        $saleHistories = Shipment::join('bill_export_shipments', 'shipments.id', '=', 'bill_export_shipments.shipment_id')
-            ->join('bill_exports', 'bill_exports.id', '=', 'bill_export_shipments.bill_export_id')
+        $saleHistories = Shipment::join('bill_export_shipment', 'shipments.id', '=', 'bill_export_shipment.shipment_id')
+            ->join('bill_exports', 'bill_exports.id', '=', 'bill_export_shipment.bill_export_id')
             ->join('users', 'users.id', '=', 'bill_exports.creator_id')
             ->where([
                 ['shipments.product_id', '=', $id],
                 ['bill_exports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])
-            ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'bill_export_shipments.bill_export_id',
-                'bill_export_shipments.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
+            ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'shipments.expire_date', 'bill_export_shipment.bill_export_id',
+                'bill_export_shipment.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
+            ->orderBy('shipments.created_at', 'desc')
             ->get();
 
-        return view('product.detail')->with('data', ['shipments' => $shipments, 'saleHistories' => $saleHistories]);
+        return view('product.detail')->with('data', [
+            'product' => $product,
+            'shipments' => $shipments,
+            'saleHistories' => $saleHistories,
+        ]);
     }
 
     public function addStocks(Request $request) {
@@ -151,7 +161,15 @@ class ProductController extends Controller
                     $record['quantity'] = $shipment['quantity'];
                     $record['total_amount'] = $shipment['sale_price'] * $shipment["quantity"];
                     $billExport->shipments()->attach($shipment['id'], $record);
+                    $shipmentObj = Shipment::find($shipment['id']);
+                    if ($shipmentObj === null) {
+                        throw new \Exception();
+                    }
+                    $shipmentObj->quantity = $shipmentObj->quantity - $record['quantity'];
+                    $shipmentObj->save();
                 }
+
+
                 DB::commit();
             } catch (\Exception $ex) {
                 DB::rollBack();
@@ -164,8 +182,12 @@ class ProductController extends Controller
 
     public function findByShipments(Request $request) {
         $shipments = DB::table('shipments')->join('products', 'products.id', '=', 'shipments.product_id')
-            ->select('shipments.*', 'products.name')
-            ->where('products.name', 'like', '%' . $request->input('searchString') . '%')->get()->toArray();
+            ->select('shipments.*', 'products.name as name')
+            ->where([
+                ['products.name', 'like', '%' . $request->input('searchString') . '%'],
+                ['shipments.quantity', '>', 0],
+            ])
+            ->orderBy('products.name')->get()->toArray();
 
         foreach ($shipments as $key => $shipment) {
             $shipments[$key]->expire_date = Carbon::parse($shipment->expire_date)->format('d-m-Y');

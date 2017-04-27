@@ -80,7 +80,7 @@ class CreateMedicDatabase extends Migration
             $table->unsignedInteger('exchange_value')->default(1);
             $table->unsignedInteger('input_quantity');
             $table->unsignedInteger('quantity');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('bill_exports', function (Blueprint $table){
@@ -94,7 +94,7 @@ class CreateMedicDatabase extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('bill_export_shipments', function (Blueprint $table){
+        Schema::create('bill_export_shipment', function (Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('bill_export_id');
             $table->unsignedInteger('shipment_id');
