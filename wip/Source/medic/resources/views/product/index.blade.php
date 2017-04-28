@@ -20,9 +20,10 @@
                 <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="tên hàng, loại,...">
+                            <input type="text" class="form-control" placeholder="tên hàng, loại,..." id="txtFilterText"
+                                   value="{{request('timkiem')}}">
                             <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Tìm!</button>
+                      <button class="btn btn-default" type="button" id="btnSearch">Tìm!</button>
                     </span>
                         </div>
                     </div>
@@ -39,7 +40,9 @@
                                 <h2>Hàng hóa</h2>
                             </div>
                             <div class="pull-right">
-                                <a href="/product/add-stocks"><button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Nhập kho</button></a>
+                                <a href="/product/add-stocks">
+                                    <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Nhập kho</button>
+                                </a>
                                 <button class="btn btn-sm btn-success"><i class="fa fa-sign-out"></i> Xuất file</button>
                                 <!--<button class="btn btn-sm btn-success">
                                   <i class="fa fa-list"></i> <i class="fa fa-caret-up"></i>
@@ -52,18 +55,21 @@
                                 <label class="control-label" style="font-size: 16px">Lọc theo</label>
                             </div>
                             <div class="form-group">
-                                <select class="form-control pull-left" name="" id="">
+                                <select class="form-control pull-left filter" name="" id="ddlFilterType">
                                     <option value="">-- Loại hàng --</option>
                                     @foreach($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @php
+                                            $selected = !empty(request('loai')) && $category->id == request('loai') ? 'selected' : '';
+                                        @endphp
+                                        <option value="{{$category->id}}" {{$selected}}>{{$category->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control pull-left" name="" id="">
+                                <select class="form-control pull-left filter" name="" id="ddlFilterStatus">
                                     <option value="">-- Tình trạng --</option>
-                                    <option value="">Còn hàng</option>
-                                    <option value="">Hết hàng</option>
+                                    <option value="1" @php if(request('tinhtrang') == 1) echo 'selected'; @endphp >Còn hàng</option>
+                                    <option value="2" @php if(request('tinhtrang') == 2) echo 'selected'; @endphp >Hết hàng</option>
                                 </select>
                             </div>
                             {{--<div class="form-group">--}}
@@ -79,17 +85,18 @@
                                     <thead>
                                     <tr class="headings">
                                         {{--<th>--}}
-                                            {{--<input type="checkbox" id="check-all" class="flat">--}}
+                                        {{--<input type="checkbox" id="check-all" class="flat">--}}
                                         {{--</th>--}}
                                         <th class="column-title">#</th>
                                         <th class="column-title">Tên hàng</th>
                                         <th class="column-title">Loại hàng</th>
                                         <th class="column-title">Tồn kho</th>
+                                        <th class="column-title">Đơn vị</th>
                                         <th class="column-title no-link last"><span class="nobr">Action</span>
                                         </th>
                                         {{--<th class="bulk-actions" colspan="7">--}}
-                                            {{--<a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span--}}
-                                                        {{--class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>--}}
+                                        {{--<a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span--}}
+                                        {{--class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>--}}
                                         {{--</th>--}}
                                     </tr>
                                     </thead>
@@ -102,14 +109,16 @@
                                         @endphp
                                         <tr class="{{$classes}} pointer">
                                             {{--<td class="a-center">--}}
-                                                {{--<input type="checkbox" class="flat" name="table_records">--}}
+                                            {{--<input type="checkbox" class="flat" name="table_records">--}}
                                             {{--</td>--}}
                                             <td class=" "><b>{{$index}}</b></td>
                                             <td class=" ">{{$product["name"]}}</td>
                                             <td class=" ">{{$product["category_name"]}}</td>
                                             <td class=" ">{{$product["quantity"]}}</td>
+                                            <td class=" ">{{$product["sale_unit"]}}</td>
                                             <td class="last">
-                                                <a href="{{url('product/detail/' . $product['id'])}}" class="btn btn-xs btn-info">
+                                                <a href="{{url('product/detail/' . $product['id'])}}"
+                                                   class="btn btn-xs btn-info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a href="#" class="btn btn-xs btn-danger">
@@ -122,7 +131,8 @@
                                 </table>
                             </div>
                             <div class="row">
-                                <div class="col-md-5 text-left">Hiển thị {{$products->firstItem()}} - {{$products->lastItem()}} trên tổng
+                                <div class="col-md-5 text-left">Hiển thị {{$products->firstItem()}}
+                                                                - {{$products->lastItem()}} trên tổng
                                                                 số {{$products->total()}} hàng hóa
                                 </div>
                                 <div class="col-md-7 text-right">
@@ -141,4 +151,36 @@
 
 @section('jsLib')
     {{-- add js here--}}
+    <script>
+        function filter() {
+            var search = $.trim($("#txtFilterText").val());
+            var type = $("#ddlFilterType").val();
+            var status = $("#ddlFilterStatus").val();
+
+            var query = '';
+            if (search != null && search != '') {
+                query += ('?timkiem=' + search);
+            }
+            if (type != '') {
+                query += (query != '' ? '&loai=' + type : '?loai=' + type);
+            }
+            if (status != '') {
+                query += (query != '' ? '&tinhtrang=' + status : '?tinhtrang=' + status);
+            }
+
+            location.href = '/product' + query;
+        }
+        $(".filter").change(function (e) {
+            filter();
+        });
+        $("#btnSearch").click(function () {
+            filter();
+        });
+        $("#txtFilterText").keypress(function (ev) {
+            var keyCode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keyCode == '13') {
+                filter();
+            }
+        })
+    </script>
 @endsection

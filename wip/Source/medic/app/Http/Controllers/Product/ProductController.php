@@ -28,16 +28,40 @@ class ProductController extends Controller
     /**
      * Show the application dashboard.
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @internal param Request $request
      */
-    public function index() {
+    public function index(Request $request) {
+        $searchString = $request->input('timkiem');
+        $type = $request->input('loai');
+        $status = $request->input('tinhtrang');
+
+        $whereConditions = [['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]];
+        $havingConditions = [];
+
+        if (!empty($searchString)) {
+            array_push($whereConditions, ['products.name', 'like', '%' . $searchString . '%']);
+        }
+        if (!empty($type)) {
+            array_push($whereConditions, ['products.category_id', '=', $type]);
+        }
+
         $products = Product::join('categories', 'categories.id', '=', 'products.category_id')
             ->join('shipments', 'shipments.product_id', '=', 'products.id')
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
-            ->where('bill_imports.sub_pharmacy_id', Auth::user()->sub_pharmacy_id)
+            ->where($whereConditions)
             ->groupBy('products.id', 'products.name', 'categories.name')
-            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'))->paginate(20);
+            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'));
+
+        if (!empty($status) && $status == '1') {
+            $products = $products->havingRaw('sum(shipments.quantity) > 0');
+        }
+        if (!empty($status) && $status == '2') {
+            $products = $products->havingRaw('sum(shipments.quantity) = 0');
+        }
+
+        $products = $products->paginate(20);
 
         $categories = Category::all();
 
@@ -65,7 +89,7 @@ class ProductController extends Controller
             ])
             ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'shipments.expire_date', 'bill_export_shipment.bill_export_id',
                 'bill_export_shipment.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
-            ->orderBy('shipments.created_at', 'desc')
+            ->orderBy('bill_exports.created_at', 'desc')
             ->get();
 
         return view('product.detail')->with('data', [
