@@ -38,7 +38,6 @@ class ProductController extends Controller
         $status = $request->input('tinhtrang');
 
         $whereConditions = [['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]];
-        $havingConditions = [];
 
         if (!empty($searchString)) {
             array_push($whereConditions, ['products.name', 'like', '%' . $searchString . '%']);
@@ -153,7 +152,10 @@ class ProductController extends Controller
 
     public function suggestProducts(Request $request) {
         $products = DB::table('products')->select('name', 'price', 'category_id')
-            ->where('name', 'like', '%' . $request->input('searchString') . '%')->get()->toArray();
+            ->where([
+                ['name', 'like', '%' . $request->input('searchString') . '%'],
+                ['products.pharmacy_id', '=', Auth::user()->pharmacy_id]
+            ])->get()->toArray();
         $productNames = array_column($products, 'name');
         $suggestionProducts = DB::table('product_defaults')->select('name', 'price', 'category_id')
             ->where('name', 'like', '%' . $request->input('searchString') . '%')
@@ -207,9 +209,11 @@ class ProductController extends Controller
     public function findByShipments(Request $request) {
         $shipments = DB::table('shipments')->join('products', 'products.id', '=', 'shipments.product_id')
             ->select('shipments.*', 'products.name as name')
+            ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where([
                 ['products.name', 'like', '%' . $request->input('searchString') . '%'],
                 ['shipments.quantity', '>', 0],
+                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]
             ])
             ->orderBy('products.name')->get()->toArray();
 
