@@ -72,9 +72,9 @@
                             </li>
                             {{--<li><a><i class="fa fa-line-chart"></i> Báo cáo <span class="nav child_menu"></span></a>--}}
                             {{--</li>--}}
-                            <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
+                            <li><a href="/product"><i class="fa fa-archive"></i> Kho <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a><i class="fa fa-table"></i> Chi nhánh <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-bank"></i> Chi nhánh <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get()  as $agency)
                                         <li><a href="/agency/{{ $agency->id }}">Chi nhánh {{ $agency->name }}</a></li>
@@ -83,9 +83,9 @@
                                     <li><a href="/agency/add"><i class="fa fa-plus"></i>Thêm chi nhánh</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/employee"><i class="fa fa-clone"></i> Nhân viên <span class="nav child_menu"></span></a>
+                            <li><a href="/employee"><i class="fa fa-users"></i> Nhân viên <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
+                            <li><a href="/product/sale"><i class="fa fa-calculator"></i> Bán hàng <span class="nav child_menu"></span></a>
                             </li>
                             <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
                             </li>
