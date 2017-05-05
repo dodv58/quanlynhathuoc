@@ -38,7 +38,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{ url('/') }}" class="site_title"><i class="fa fa-medkit"></i>
+                    <a href="{{ url('/home') }}" class="site_title"><i class="fa fa-medkit"></i>
                         <span>@if(Auth::check() && \App\Models\Pharmacy::find(auth()->user()->pharmacy_id))
                                 {{ \App\Models\Pharmacy::find(auth()->user()->pharmacy_id)->name }}
                             @endif</span></a>
@@ -52,7 +52,7 @@
                         <img src="{{asset('images/img.jpg')}}" alt="..." class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>Welcome,</span>
+                        <span>Xin chào,</span>
                         @if(Auth::check())
                             <h2>{{ auth()->user()->name }}</h2>
                         @endif
@@ -124,13 +124,13 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li><a href="javascript:;"> Thông tin cá nhân</a></li>
                                     <li>
                                         <a href="javascript:;">
                                             <span>Thiết lập</span>
                                         </a>
                                     </li>
-                                    <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                    <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a>
                                     </li>
                                 </ul>
                             @endif

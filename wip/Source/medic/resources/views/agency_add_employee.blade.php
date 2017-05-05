@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-sm-12 col-xs-12 pull-right">
                                 <button type="submit" id="add-btn" class="btn btn-success pull-right">Thêm</button>
-                                <button class="btn btn-primary pull-right" onclick="window.location.href='/home/agency/{{ $agency->id }}'" type="button">Hủy</button>
+                                <button class="btn btn-primary pull-right" onclick="window.location.href='/agency/{{ $agency->id }}'" type="button">Hủy</button>
                             </div>
                         </div>
                     </div>

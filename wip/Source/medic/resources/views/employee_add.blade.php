@@ -120,7 +120,7 @@
                             <div class="form-group">
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <button type="submit" class="btn btn-success pull-right">Thêm</button>
-                                    <button class="btn btn-primary pull-right" onclick="window.location.href='http://medic.app/employee'" type="button">Hủy</button>
+                                    <button class="btn btn-primary pull-right" onclick="window.location.href='/employee'" type="button">Hủy</button>
                                 </div>
                             </div>
                         </form>
