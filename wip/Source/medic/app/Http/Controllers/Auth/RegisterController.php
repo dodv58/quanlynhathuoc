@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pharmacy;
+use App\Models\SubPharmacy;
 
 class RegisterController extends Controller
 {
@@ -63,6 +65,7 @@ class RegisterController extends Controller
      */
     protected function store()
     {
+//        dd(request()->all());
         try {
             DB::beginTransaction();
             $user = User::create([
@@ -75,14 +78,40 @@ class RegisterController extends Controller
                 'role' => 1
             ]);
 
-            DB::commit();
             auth()->login($user);
+
+            $pharmacy = Pharmacy::create([
+                'name' => request('pharmacy-name'),
+                'email' => request('email'),
+                'account' => request('account'),
+                'address' => request('pharmacy-address'),
+                'phone' => request('pharmacy-phone'),
+                'owner_name' => auth()->user()->name
+            ]);
+
+            $sub_pharmacy = SubPharmacy::create([
+                'name' => $pharmacy->name,
+                'pharmacy_id' => $pharmacy->id,
+                'address' => request('pharmacy-address'),
+                'phone' => request('pharmacy-phone')
+            ]);
+
+            DB::commit();
+
+            auth()->user()->pharmacy_id = $pharmacy->id;
+            auth()->user()->sub_pharmacy_id = $sub_pharmacy->id;
+            auth()->user()->save();
+
         }
         catch (\Exception $ex){
             DB::rollBack();
             throw $ex;
         }
-        return redirect('pharmacy-register');
+
+
+
+        return redirect()->home();
+
     }
 
     public function create(){

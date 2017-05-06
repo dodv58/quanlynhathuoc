@@ -38,7 +38,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{ url('/') }}" class="site_title"><i class="fa fa-medkit"></i>
+                    <a href="{{ url('/home') }}" class="site_title"><i class="fa fa-medkit"></i>
                         <span>@if(Auth::check() && \App\Models\Pharmacy::find(auth()->user()->pharmacy_id))
                                 {{ \App\Models\Pharmacy::find(auth()->user()->pharmacy_id)->name }}
                             @endif</span></a>
@@ -87,8 +87,8 @@
                             </li>
                             <li><a href="/product/sale"><i class="fa fa-clone"></i> Bán hàng <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
-                            </li>
+                            {{--<li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>--}}
+                            {{--</li>--}}
                         </ul>
                         @else
                             <ul class="nav side-menu">
@@ -96,8 +96,8 @@
                                 </li>
                                 <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
                                 </li>
-                                <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
-                                </li>
+                                {{--<li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>--}}
+                                {{--</li>--}}
                             </ul>
                         @endif
                     </div>
@@ -124,7 +124,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li><a href="/profile"> Profile</a></li>
                                     <li>
                                         <a href="javascript:;">
                                             <span>Thiết lập</span>

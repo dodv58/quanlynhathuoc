@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -58,7 +59,13 @@ class LoginController extends Controller
 
     public function login(){
         if(! auth()->attempt(request(['account', 'password']))){
-            return back();
+            if(!User::where('account', request('account'))->first()){
+                return back()->withInput()->withErrors(['account' => 'Tài khoản không tồn tại!']);
+            }
+            else {
+                return back()->withInput()->withErrors(['password' => 'Sai mật khẩu!']);
+            }
+
         }
         return redirect()->home();
     }
