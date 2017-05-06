@@ -51,7 +51,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nhân viên</th>
-                                    <th>Account</th>
+                                    <th>Tài khoản</th>
                                     <th>Chi nhánh</th>
                                     <th>Số điện thoại</th>
                                     <th class="column-title no-link last" width="150"><span class="nobr">Chỉnh sửa/ Xóa</span>
