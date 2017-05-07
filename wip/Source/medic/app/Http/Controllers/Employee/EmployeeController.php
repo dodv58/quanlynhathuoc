@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\SubPharmacy;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -18,8 +19,7 @@ class EmployeeController extends Controller
 
     public function __construct()
     {
-
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['checkEmployeeExisted']]);
     }
 
     public function employee()
@@ -35,7 +35,6 @@ class EmployeeController extends Controller
     }
 
     public function storeEmployee() {
-
         $user = User::where('account', request('account'))->first();
         try {
             DB::beginTransaction();
@@ -45,11 +44,12 @@ class EmployeeController extends Controller
                 $newUser->sub_pharmacy_id = \request('agency');
                 $newUser->account = request('account');
                 $newUser->email = request('email');
+                $newUser->birthday = \request('birthday');
                 $newUser->password = bcrypt("123456");
                 $newUser->name = request('name');
                 $newUser->address = request('address');
                 $newUser->phone = request('phone');
-                if (request('role') == 'Quản lý') {
+                if (request('role') == 'manager') {
                     $newUser->role = 1;
                 } else {
                     $newUser->role = 2;
@@ -85,9 +85,14 @@ class EmployeeController extends Controller
         $user = User::where('account', $account)->first();
         if($user) {
             $user->sub_pharmacy_id = SubPharmacy::where('name', request('agency'))->first()->id;
+            $user->birthday = \request('birthday');
             $user->address = request('address');
             $user->phone = request('phone');
-            $user->role = 1;
+            if (request('role') == 'manager') {
+                $user->role = 1;
+            } else {
+                $user->role = 2;
+            }
             $user->save();
         }
         return redirect('/employee');
@@ -101,4 +106,11 @@ class EmployeeController extends Controller
         return 0 ;
 
     }
+
+    public function showProfile(){
+        $user = auth()->user();
+
+        return view('employee_edit', compact('user'));
+    }
+
 }

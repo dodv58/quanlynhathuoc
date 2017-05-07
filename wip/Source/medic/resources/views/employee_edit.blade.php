@@ -62,7 +62,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" pattern="[0-9-/]+" required="required" type="text">
+                                    <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" pattern="[0-9-/]+" required="required" type="text" value="{{ $user->birthday }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -95,8 +95,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="role" required="required">
-                                        <option>Nhân viên</option>
-                                        <option>Quản lý</option>
+                                        <option value="manager">Nhân viên</option>
+                                        <option value="employee">Quản lý</option>
                                     </select>
                                 </div>
                             </div>

@@ -87,8 +87,8 @@
                             </li>
                             <li><a href="/product/sale"><i class="fa fa-calculator"></i> Bán hàng <span class="nav child_menu"></span></a>
                             </li>
-                            <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
-                            </li>
+                            {{--<li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>--}}
+                            {{--</li>--}}
                         </ul>
                         @else
                             <ul class="nav side-menu">
@@ -96,8 +96,8 @@
                                 </li>
                                 <li><a href="/product"><i class="fa fa-clone"></i> Kho <span class="nav child_menu"></span></a>
                                 </li>
-                                <li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>
-                                </li>
+                                {{--<li><a><i class="fa fa-cog"></i> Thiết lập <span class="nav child_menu"></span></a>--}}
+                                {{--</li>--}}
                             </ul>
                         @endif
                     </div>

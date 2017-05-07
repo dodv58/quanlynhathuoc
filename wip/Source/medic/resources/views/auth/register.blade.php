@@ -1,4 +1,15 @@
 @extends('layouts.app-default')
+@section('cssLib')
+    <style>
+        .ln_solid {
+            border-top: 1px solid #e5e5e5;
+            color: #ffffff;
+            background-color: #ffffff;
+            height: 1px;
+            margin: 20px 0
+        }
+    </style>
+@endsection
 @section('content')
 <div class="container body">
     <div class="main_container">
@@ -23,12 +34,14 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
+                            <div id="account-form-group" class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
+
                                 <label for="account" class="col-md-4 control-label">Tài khoản</label>
 
                                 <div class="col-md-6">
-                                    <input id="account" type="text" class="form-control" name="account" value="{{ old('account') }}" required autofocus>
-
+                                    <input id="account" type="text" class="form-control" name="account"  required autofocus>
+                                    {{--<input type="text" id="account" name="account" pattern="[A-Za-z0-9_]+" required="required" class="form-control col-md-7 col-xs-12">--}}
+                                    <span class="pull-right text-danger" id="account-feedback"></span>
                                     @if ($errors->has('account'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('account') }}</strong>
@@ -66,7 +79,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Nhập lại mật khẩu</label>
+                                <label for="password-confirm" class="col-md-4 control-label">Xác nhận mật khẩu</label>
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
@@ -100,10 +113,52 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="ln_solid"></div>
+                            {{--<div class="panel-heading">Thông tin nhà thuốc</div>--}}
+                            <h5>Thông tin nhà thuốc</h5>
 
+                            <div class="form-group{{ $errors->has('pharmacy-name') ? ' has-error' : '' }}">
+                                <label for="pharmacy-name" class="col-md-4 control-label">Tên nhà thuốc</label>
+
+                                <div class="col-md-6">
+                                    <input id="pharmacy-name" type="text" class="form-control" name="pharmacy-name" value="{{ old('pharmacy-name') }}" required autofocus>
+
+                                    @if ($errors->has('pharmacy-name'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('pharmacy-name') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('pharmacy-phone') ? ' has-error' : '' }}">
+                                <label for="pharmacy-phone" class="col-md-4 control-label">Số điện thoại</label>
+
+                                <div class="col-md-6">
+                                    <input id="pharmacy-phone" type="text" class="form-control" name="pharmacy-phone" value="{{ old('pharmacy-phone') }}" required autofocus>
+
+                                    @if ($errors->has('pharmacy-phone'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('pharmacy-phone') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('pharmacy-address') ? ' has-error' : '' }}">
+                                <label for="pharmacy-address" class="col-md-4 control-label">Địa chỉ</label>
+
+                                <div class="col-md-6">
+                                    <input id="pharmacy-address" type="text" class="form-control" name="pharmacy-address" value="{{ old('address') }}" required autofocus>
+
+                                    @if ($errors->has('pharmacy-address'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('pharmacy-address') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                <div class="col-md-10">
+                                    <button type="submit" class="btn btn-primary pull-right">
                                         Đăng ký
                                     </button>
                                 </div>
@@ -115,5 +170,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#account').on('change', function () {
+            var txt = $('#account').val();
+            $.ajax({
+                type: "get",
+                url: '/employee/check-employee-existed',
+                data: {
+                    txt: txt
+                },
+                cache: false,
+                success: function (data) {
+                    if(data == 1){
+                        $('#account-form-group').removeClass('has-success').addClass('has-error')
+                        $('#account-feedback').html('Tài khoản đã tồn tại!')
+                    }
+                    else {
+                        $('#account-form-group').removeClass('has-error').addClass('has-success')
+                        $('#account-feedback').html('')
+                    }
+                }
+            });
+        });
+    })
+
+
+
+</script>
 
 @endsection

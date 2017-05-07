@@ -38,7 +38,6 @@
                                     <input type="text" id="account" name="account" pattern="[A-Za-z0-9_]+" required="required" class="form-control col-md-7 col-xs-12">
                                     <span class="pull-right text-danger" id="account-feedback"></span>
                                 </div>
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 text-danger"><span class="pull-right" id="account-existed"></span></div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
@@ -99,8 +98,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="role" name="role" required="required">
-                                        <option>Nhân viên</option>
-                                        <option>Quản lý</option>
+                                        <option value="manager">Nhân viên</option>
+                                        <option value="employee">Quản lý</option>
                                     </select>
                                 </div>
                             </div>
@@ -130,6 +129,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script !src="">
             $('#account').on('change', (function () {
                 var txt = $('#account').val();
@@ -153,5 +153,14 @@
                     }
                 });
             }));
+
+            $('#add_employee').validate({
+                rules: {
+                    birthday: {
+                        date: true
+                    }
+                }
+            });
     </script>
+
 @endsection
