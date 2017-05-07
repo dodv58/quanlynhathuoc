@@ -44,6 +44,7 @@ class CreateMedicDatabase extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedBigInteger('price');
+            $table->string('unit', 10);
             $table->unsignedInteger('category_id');
             $table->timestamps();
         });
@@ -52,6 +53,8 @@ class CreateMedicDatabase extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('min_quantity');
+            $table->string('unit', 10);
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('pharmacy_id');
             $table->unsignedInteger('creator_id');

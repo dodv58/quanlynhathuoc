@@ -28,6 +28,8 @@ Route::post('/product/add-product', 'Product\ProductController@addProduct');
 Route::get('/product/sale', 'Product\ProductController@sale')->name('sale');
 Route::post('/product/sale', 'Product\ProductController@sale');
 Route::get('/product/find-products', 'Product\ProductController@findByShipments');
+Route::post('/product/edit', 'Product\ProductController@editProduct');
+Route::post('/product/add', 'Product\ProductController@addProduct');
 
 
 

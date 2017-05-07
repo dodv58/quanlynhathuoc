@@ -25,9 +25,26 @@
             <div class="clearfix"></div>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel form-inline">
+                        <div class="form-group" style="width: 100px">
+                            <label for="txtSearchString" class="control-label pull-left">
+                                Tìm kiếm
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 80%">
+                            <input id="txtSearchString" class="form-control"
+                                   style="width: 100%"
+                                   placeholder="Nhập tên thuốc"
+                                   type="text" name="searchString">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Thông tin thuốc</h2>
+                            <h2>Thông tin lô nhập</h2>
                             <div class="pull-right"></div>
                             <div class="clearfix"></div>
                         </div>
@@ -35,22 +52,24 @@
                             <form id="form-add-product" data-parsley-validate class="form-horizontal form-label-left"
                                   novalidate>
                                 <div class="col-md-6 col-xs-12">
+                                    <input type="hidden" id="txtProductId" name="product_id">
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Tên Thuốc
                                             <span class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <input type="text" id="txtProductName" name="productName"
-                                                   required
+                                                   required readonly
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="productCode" class="control-label col-md-3 col-sm-3 col-xs-12">
-                                            Mã vạch
+                                            Danh mục
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <select class="form-control" name="categoryId" id="ddlCategoryId">
+                                            <select class="form-control" name="categoryId" id="ddlCategoryId"
+                                                    readonly="">
                                                 @foreach($categories as $category)
                                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                                 @endforeach
@@ -58,29 +77,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="inputUnit">
-                                            Đơn vị nhập <span class="required">*</span>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="inputPrice">
+                                            Giá nhập <span class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <select class="form-control" id="ddlInputUnit" name="inputUnit">
-                                                <option value="Hộp">Hộp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Viên">Viên</option>
-                                                <option value="Tuýp">Tuýp</option>
-                                            </select>
+                                            <input type="text" id="txtInputPrice" name="inputPrice" required="required"
+                                                   class="form-control col-md-7 col-xs-12">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ddlSaleUnit">
-                                            Đơn vị bán <span class="required">*</span>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Số lượng<span
+                                                    class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <select class="form-control" id="ddlSaleUnit" name="saleUnit">
-                                                <option value="Hộp">Hộp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Viên">Viên</option>
-                                                <option value="Tuýp">Tuýp</option>
-                                            </select>
+                                            <input type="text" id="txtQuantity" required="required" name="quantity"
+                                                   class="form-control col-md-7 col-xs-12">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -97,21 +108,30 @@
                                 </div>
                                 <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Số lượng<span
-                                                    class="required">*</span>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ddlSaleUnit">
+                                            Đơn vị bán <span class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" id="txtQuantity" required="required" name="quantity"
-                                                   class="form-control col-md-7 col-xs-12">
+                                            <select class="form-control" id="ddlSaleUnit" name="saleUnit" readonly="">
+                                                <option value="Hộp">Hộp</option>
+                                                <option value="Vỉ">Vỉ</option>
+                                                <option value="Viên">Viên</option>
+                                                <option value="Tuýp">Tuýp</option>
+                                            </select>
                                         </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="inputPrice">
-                                            Giá nhập <span class="required">*</span>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="inputUnit">
+                                            Đơn vị nhập <span class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" id="txtInputPrice" name="inputPrice" required="required"
-                                                   class="form-control col-md-7 col-xs-12">
+                                            <select class="form-control" id="ddlInputUnit" name="inputUnit">
+                                                <option value="Hộp">Hộp</option>
+                                                <option value="Vỉ">Vỉ</option>
+                                                <option value="Viên">Viên</option>
+                                                <option value="Tuýp">Tuýp</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -148,9 +168,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-2">
                                         <button class="btn btn-danger" type="reset" id="btnClear">Hủy</button>
-                                        <button type="button" id="btnAddProduct" class="btn btn-success">Thêm thuốc
+                                        <button type="button" id="btnAddProduct" class="btn btn-success">Thêm thuốc vào
+                                                                                                         lô
                                         </button>
                                     </div>
                                 </div>
@@ -163,7 +184,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Thuốc nhập kho </h2>
+                            <h2>Danh sách thuốc trong lô </h2>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -217,7 +238,8 @@
                                                 id="btnSubmitStock">
                                             Nhập Kho
                                         </button>
-                                        <button class="btn btn-danger col-md-3 pull-right" type="button" id="btnRemoveAll">
+                                        <button class="btn btn-danger col-md-3 pull-right" type="button"
+                                                id="btnRemoveAll">
                                             Xóa toàn bộ
                                         </button>
                                     </div>
@@ -229,13 +251,83 @@
             </div>
         </div>
     </div>
+    <!-- Modals -->
+    <div id="addProductModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <form id="addProductForm" method="post" action="{{url('product/add')}}" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title">Thêm thông tin</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Tên
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <input type="text" id="txtAddProductName" name="productName"
+                                       required
+                                       class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productCode" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Danh mục
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <select class="form-control" name="categoryId" id="ddlAddCategoryId">
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Đơn vị bán ra
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <select class="form-control" id="ddlAddSaleUnit" name="saleUnit">
+                                    <option value="Hộp">Hộp</option>
+                                    <option value="Vỉ">Vỉ</option>
+                                    <option value="Viên">Viên</option>
+                                    <option value="Tuýp">Tuýp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Giá bán ra
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <input type="text" id="txtAddSalePrice" name="salePrice"
+                                       required
+                                       class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Giới hạn số lượng
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <input type="text" id="txtAddMinQuantity" name="minQuantity"
+                                       required
+                                       class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary addNewProduct">Thêm thông tin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('jsLib')
     {{-- add js here--}}
     <script src="{{ asset('vendors/jquery-autocomplete/jquery.autocomplete.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
     <script>
 
         var addProductValidator = $("#form-add-product").validate({
@@ -261,11 +353,29 @@
                 }
             }
         });
+
+        var addProductModalValidation = $("#addProductForm").validate({
+            rules: {
+                minQuantity: {
+                    required: true,
+                    digits: true
+                },
+                salePrice: {
+                    required: true,
+                    digits: true
+                },
+                name: {
+                    required: true
+                }
+            }
+        });
+
         var products = [];
         var totalAmount = 0;
         $("#btnAddProduct").click(function (e) {
             if ($('#form-add-product').valid()) {
                 var product = {};
+                product["product_id"] = $("#txtProductId").val();
                 product["name"] = $("#txtProductName").val();
                 product["category_id"] = $("#ddlCategoryId").val();
                 product["input_unit"] = $("#ddlInputUnit").val();
@@ -345,7 +455,7 @@
             return html;
         }
 
-        $('#txtProductName').autocomplete({
+        $('#txtSearchString').autocomplete({
             serviceUrl: '/product/suggest-products',
             paramName: 'searchString',
             transformResult: function (response) {
@@ -358,22 +468,73 @@
             },
             onSelect: function (suggestion) {
                 //suggestion.object contain all values pass thru, no need to call again
-                $("#txtSalePrice").val(suggestion.data.price);
-                $("#ddlCategoryId").val(suggestion.data.category_id);
+                if (suggestion.data.id !== null) {
+                    $("#txtProductId").val(suggestion.data.id);
+                    $("#txtProductName").val(suggestion.data.name);
+                    $("#txtSalePrice").val(suggestion.data.price);
+                    $("#ddlCategoryId").val(suggestion.data.category_id);
+                    $("#ddlSaleUnit").val(suggestion.data.unit);
+                    $("#txtSearchString").val("");
+                } else {
+                    swal({
+                            title: "Chú ý",
+                            text: "Sản phẩm bạn chọn chưa từng nhập kho, cần thêm thông tin!",
+                            type: "warning",
+                            showCancelButton: true,
+                            cancelButtonText: "Hủy bỏ",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Đồng ý",
+                            closeOnConfirm: true
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $("#txtAddProductName").val(suggestion.data.name);
+                                $("#ddlAddCategoryId").val(suggestion.data.category_id)
+                                $("#ddlAddSaleUnit").val(suggestion.data.unit);
+                                $("#txtAddSalePrice").val(suggestion.data.price);
+                                $("#txtAddMinQuantity").val();
+                                $("#addProductModal").modal('show');
+                            }
+                        });
+                }
             }
+        });
+
+        $(".addNewProduct").click(function (e) {
+            if (addProductModalValidation.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: '{{url('product/add')}}',
+                    data: $("#addProductForm").serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        $("#addProductModal").modal('hide');
+                        $("#txtProductId").val(data.id);
+                        $("#txtProductName").val(data.name);
+                        $("#txtSalePrice").val(data.price);
+                        $("#ddlCategoryId").val(data.category_id);
+                        $("#ddlSaleUnit").val(data.unit);
+                        $("#txtSearchString").val("");
+                    }
+                });
+            }
+        });
+
+        $('#addProductModal').on('hidden.bs.modal', function () {
+            addProductModalValidation.resetForm();
+            $("#addProductForm").find('.error').removeClass('error');
         });
 
         $(document).on("click", "button.btnRemoveProduct", function (e) {
             totalAmount -= $(this).data("amount");
             var name = $(this).data("name");
             updateTotalAmount(totalAmount);
-            products = products.filter(function(el) {
+            products = products.filter(function (el) {
                 return el["name"] !== name;
             });
             updateProductInput();
             $(this).closest('tr').remove();
         });
-        
+
         $("#btnRemoveAll").click(function (e) {
             totalAmount = 0;
             products = [];

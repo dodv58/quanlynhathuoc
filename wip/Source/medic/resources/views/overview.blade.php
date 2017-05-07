@@ -7,6 +7,10 @@
 {{--*/--}}
 
 @extends('layouts.app')
+@php
+$startOfMonth = \Carbon\Carbon::now()->startOfMonth()->format('d/m/Y');
+$endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
+@endphp
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <div class="right_col" role="main">
@@ -22,7 +26,7 @@
                         <div class="col-md-6">
                             <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>April 01, 2017 - April 23, 2017   </span> <b class="caret"></b>
+                                <span>{{$startOfMonth . ' - ' . $endOfMonth}}</span> <b class="caret"></b>
                             </div>
                         </div>
                     </div>
@@ -110,39 +114,19 @@
                             <tr>
                                 <th>#</th>
                                 <th>Tên thuốc</th>
-                                <th>Hạn sử dụng</th>
                                 <th>Số lượng</th>
+                                <th>Đơn vị</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td class="text-danger">Progesterone (dạng hạt mịn)
-                                </td>
-                                <td class="text-danger">23/02/2018</td>
-                                <td class="text-danger">0</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Methyl prednisolon
-                                </td>
-                                <td>5/6/2018</td>
-                                <td>50</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Glycerol
-                                </td>
-                                <td>12/12/2017</td>
-                                <td>60</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Omeprazol 20mg
-                                </td>
-                                <td>01/12/2017</td>
-                                <td>60</td>
-                            </tr>
+                            @foreach($outStockProducts as $product)
+                                <tr>
+                                    <th scope="row">{{$loop->iteration}}</th>
+                                    <td>{{$product['name']}}</td>
+                                    <td>{{$product['quantity']}}</td>
+                                    <td>{{$product['unit']}}</td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
 
@@ -183,34 +167,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th class="text-danger" scope="row">1</th>
-                                <td class="text-danger">Omeprazol
-                                </td>
-                                <td class="text-danger">23/03/2017</td>
-                                <td class="text-danger">16</td>
-                            </tr>
-                            <tr>
-                                <th class="text-danger" scope="row">2</th>
-                                <td class="text-danger">Piperacilin
-                                </td>
-                                <td class="text-danger">5/4/2017</td>
-                                <td class="text-danger">100</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Ceftazidim 500g
-                                </td>
-                                <td>12/06/2017</td>
-                                <td>60</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Paracetamol (acetaminophen)
-                                </td>
-                                <td>01/07/2017</td>
-                                <td>100</td>
-                            </tr>
+                            @foreach($expireProducts as $product)
+                                <tr>
+                                    <th scope="row">{{$loop->iteration}}</th>
+                                    <td>{{$product['name']}}</td>
+                                    <td>{{\Carbon\Carbon::parse($product['expire_date'])->format('d-m-Y')}}</td>
+                                    <td>{{$product['quantity']}}</td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
 

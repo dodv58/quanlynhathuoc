@@ -68,8 +68,15 @@
                             <div class="form-group">
                                 <select class="form-control pull-left filter" name="" id="ddlFilterStatus">
                                     <option value="">-- Tình trạng --</option>
-                                    <option value="1" @php if(request('tinhtrang') == 1) echo 'selected'; @endphp >Còn hàng</option>
-                                    <option value="2" @php if(request('tinhtrang') == 2) echo 'selected'; @endphp >Hết hàng</option>
+                                    <option value="1" @php if(request('tinhtrang') == 1) echo 'selected'; @endphp >Còn
+                                                                                                                   hàng
+                                    </option>
+                                    <option value="2" @php if(request('tinhtrang') == 2) echo 'selected'; @endphp >Hết
+                                                                                                                   hàng
+                                    </option>
+                                    <option value="3" @php if(request('tinhtrang') == 3) echo 'selected'; @endphp >Gần hết
+                                                                                                                   hàng
+                                    </option>
                                 </select>
                             </div>
                             {{--<div class="form-group">--}}
@@ -91,6 +98,7 @@
                                         <th class="column-title">Tên hàng</th>
                                         <th class="column-title">Loại hàng</th>
                                         <th class="column-title">Tồn kho</th>
+                                        <th class="column-title">Tối thiểu</th>
                                         <th class="column-title">Đơn vị</th>
                                         <th class="column-title no-link last"><span class="nobr">Action</span>
                                         </th>
@@ -104,7 +112,8 @@
                                     <tbody>
                                     @foreach($products as $product)
                                         @php
-                                            $classes = $loop->index % 2 === 0 ? "even" : "odd";
+                                            $classes = $loop->index % 2 === 0 ? 'even' : 'odd';
+                                            $classes .= ($product['quantity'] < $product['min_quantity']) ? ' text-danger' : '';
                                             $index = $products->firstItem() + $loop->index;
                                         @endphp
                                         <tr class="{{$classes}} pointer">
@@ -112,17 +121,21 @@
                                             {{--<input type="checkbox" class="flat" name="table_records">--}}
                                             {{--</td>--}}
                                             <td class=" "><b>{{$index}}</b></td>
-                                            <td class=" ">{{$product["name"]}}</td>
-                                            <td class=" ">{{$product["category_name"]}}</td>
-                                            <td class=" ">{{$product["quantity"]}}</td>
-                                            <td class=" ">{{$product["sale_unit"]}}</td>
+                                            <td class=" ">{{$product['name']}}</td>
+                                            <td class=" ">{{$product['category_name']}}</td>
+                                            <td class=" ">{{$product['quantity']}}</td>
+                                            <td class=" ">{{$product['min_quantity']}}</td>
+                                            <td class=" ">{{$product['unit']}}</td>
                                             <td class="last">
                                                 <a href="{{url('product/detail/' . $product['id'])}}"
                                                    class="btn btn-xs btn-info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a href="#" class="btn btn-xs btn-danger">
-                                                    <i class="fa fa-trash"></i>
+                                                <a href="#" class="btn btn-xs btn-success edit-product"
+                                                   data-id="{{$product['id']}}"
+                                                   data-categoryid="{{$product['category_id']}}"
+                                                   data-minquantity="{{$product['min_quantity']}}">
+                                                    <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -147,11 +160,63 @@
             </div>
         </div>
     </div>
+    <!-- Modals -->
+    <div id="editProduct" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <form id="editForm" method="post" action="{{url('product/edit')}}" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title">Chỉnh sửa</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <input type="hidden" name="productId" id="txtEditProductId">
+                        <div class="form-group">
+                            <label for="productCode" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Danh mục
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <select class="form-control" name="categoryId" id="ddlEditCategoryId">
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="drug-">Giới hạn số lượng
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <input type="text" id="txtEditMinQuantity" name="minQuantity"
+                                       required
+                                       class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('jsLib')
     {{-- add js here--}}
     <script>
+        var editProductValidation = $("#editForm").validate({
+            rules: {
+                minQuantity: {
+                    required: true,
+                    digits: true
+                }
+            }
+        });
+
         function filter() {
             var search = $.trim($("#txtFilterText").val());
             var type = $("#ddlFilterType").val();
@@ -182,5 +247,20 @@
                 filter();
             }
         })
+
+        $(".edit-product").click(function (e) {
+            var productId = $(this).data('id');
+            var categoryId = $(this).data('categoryid');
+            var minQuantity = $(this).data('minquantity');
+            $("#txtEditProductId").val(productId);
+            $("#txtEditMinQuantity").val(minQuantity);
+            $("#ddlEditCategoryId").val(categoryId);
+            $("#editProduct").modal('show');
+        });
+
+        $('#editProduct').on('hidden.bs.modal', function () {
+            editProductValidation.resetForm();
+            $("#editForm").find('.error').removeClass('error');
+        });
     </script>
 @endsection

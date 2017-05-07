@@ -242,6 +242,7 @@
             });
             $("#lbTotalAmount").html(totalAmount);
             $("#lbTotalAmount2").html(totalAmount);
+            $("#txtTotalAmount").val(totalAmount);
             $("#lbBackAmount").html(totalAmount - parseInt($("#txtReceivedAmount").val()));
         }
     </script>
