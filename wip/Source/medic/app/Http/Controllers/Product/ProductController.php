@@ -53,7 +53,7 @@ class ProductController extends Controller
             ->join('shipments', 'shipments.product_id', '=', 'products.id')
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where($whereConditions)
-            ->groupBy('products.id', 'products.name', 'categories.name')
+            ->groupBy('products.id', 'products.name', 'categories.name','products.min_quantity','products.unit', 'categories.id')
             ->select('products.id', 'products.name', 'products.min_quantity','products.unit' , 'categories.id as category_id',
                 'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'));
         if (!empty($status) && $status == '1') {

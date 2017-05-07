@@ -40,7 +40,7 @@ class HomeController extends Controller
                     ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
                     ['products.pharmacy_id', '=', Auth::user()->pharmacy_id],
                 ])
-                ->groupBy('products.id', 'products.name')
+                ->groupBy('products.id', 'products.name', 'products.min_quantity', 'products.unit')
                 ->select('products.id', 'products.name', 'products.min_quantity', 'products.unit', DB::raw('sum(shipments.quantity) as quantity'))
                 ->havingRaw('sum(shipments.quantity) < min(products.min_quantity)')
                 ->get();
