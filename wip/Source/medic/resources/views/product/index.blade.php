@@ -125,7 +125,7 @@
                                             <td class=" ">{{$product['category_name']}}</td>
                                             <td class=" ">{{$product['quantity']}}</td>
                                             <td class=" ">{{$product['min_quantity']}}</td>
-                                            <td class=" ">{{$product['sale_unit']}}</td>
+                                            <td class=" ">{{$product['unit']}}</td>
                                             <td class="last">
                                                 <a href="{{url('product/detail/' . $product['id'])}}"
                                                    class="btn btn-xs btn-info">
