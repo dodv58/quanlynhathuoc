@@ -37,7 +37,10 @@ class ProductController extends Controller
         $type = $request->input('loai');
         $status = $request->input('tinhtrang');
 
-        $whereConditions = [['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]];
+        $whereConditions = [
+            ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
+            ['products.pharmacy_id', '=', Auth::user()->pharmacy_id],
+        ];
 
         if (!empty($searchString)) {
             array_push($whereConditions, ['products.name', 'like', '%' . $searchString . '%']);
@@ -51,13 +54,16 @@ class ProductController extends Controller
             ->join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where($whereConditions)
             ->groupBy('products.id', 'products.name', 'categories.name')
-            ->select('products.id', 'products.name', 'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'));
-
+            ->select('products.id', 'products.name', 'products.min_quantity', 'categories.id as category_id',
+                'categories.name as category_name', DB::raw('sum(shipments.quantity) as quantity'));
         if (!empty($status) && $status == '1') {
             $products = $products->havingRaw('sum(shipments.quantity) > 0');
         }
         if (!empty($status) && $status == '2') {
             $products = $products->havingRaw('sum(shipments.quantity) = 0');
+        }
+        if (!empty($status) && $status == '3') {
+            $products = $products->havingRaw('sum(shipments.quantity) < min(products.min_quantity)');
         }
 
         $products = $products->paginate(20);
@@ -117,19 +123,8 @@ class ProductController extends Controller
 
                 $shipments = [];
                 foreach ($products as $product) {
-                    $productObj = Product::where([["name", '=', $product["name"]], ["category_id", '=', $product["category_id"]]])->first();
-                    if (!$productObj) {
-                        $productObj = Product::create([
-                            'name' => $product["name"],
-                            'price' => $product["sale_price"],
-                            'category_id' => $product["category_id"],
-                            'pharmacy_id' => Auth::user()->pharmacy_id,
-                            'creator_id' => Auth::id(),
-                        ]);
-                    }
                     unset($product["category_id"]);
                     unset($product["name"]);
-                    $product["product_id"] = $productObj->id;
                     $product["bill_import_id"] = $billImport->id;
                     $product["input_quantity"] = $product["quantity"];
                     $product["expire_date"] = !empty($product["expire_date"]) ? Carbon::createFromFormat("d-m-Y", $product["expire_date"]) : null;
@@ -150,14 +145,31 @@ class ProductController extends Controller
         return view('product.add-stocks')->with('categories', $categories);
     }
 
+    public function addProduct(Request $request){
+        if($request->isMethod('post')){
+            $params = $request->input();
+            $productObj = Product::create([
+                'name' => $params["productName"],
+                'price' => $params["salePrice"],
+                'price' => $params["salePrice"],
+                'unit' => $params["saleUnit"],
+                'min_quantity' => $params["minQuantity"],
+                'category_id' => $params["categoryId"],
+                'pharmacy_id' => Auth::user()->pharmacy_id,
+                'creator_id' => Auth::id(),
+            ]);
+            return response()->json($productObj);
+        }
+    }
+
     public function suggestProducts(Request $request) {
-        $products = DB::table('products')->select('name', 'price', 'category_id')
+        $products = DB::table('products')->select('id', 'name', 'price', 'category_id', 'unit')
             ->where([
                 ['name', 'like', '%' . $request->input('searchString') . '%'],
-                ['products.pharmacy_id', '=', Auth::user()->pharmacy_id]
+                ['products.pharmacy_id', '=', Auth::user()->pharmacy_id],
             ])->get()->toArray();
         $productNames = array_column($products, 'name');
-        $suggestionProducts = DB::table('product_defaults')->select('name', 'price', 'category_id')
+        $suggestionProducts = DB::table('product_defaults')->select(DB::raw('null as id'), 'name', 'price', 'category_id', 'unit')
             ->where('name', 'like', '%' . $request->input('searchString') . '%')
             ->whereNotIn('name', $productNames)->get()->toArray();
         $suggestionProducts = array_merge($suggestionProducts, $products);
@@ -213,7 +225,7 @@ class ProductController extends Controller
             ->where([
                 ['products.name', 'like', '%' . $request->input('searchString') . '%'],
                 ['shipments.quantity', '>', 0],
-                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]
+                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])
             ->orderBy('products.name')->get()->toArray();
 
@@ -224,6 +236,19 @@ class ProductController extends Controller
         }
 
         return response()->json($shipments);
+    }
+
+    public function editProduct(Request $request) {
+        if ($request->isMethod('post')) {
+            $productId = $request->input('productId');
+            $categoryId = $request->input('categoryId');
+            $minQuantity = $request->input('minQuantity');
+
+            Product::where('id', $productId)
+                ->update(['category_id' => $categoryId, 'min_quantity' => $minQuantity]);
+
+            return redirect()->action('Product\ProductController@index');
+        }
     }
 
     /**
