@@ -113,4 +113,11 @@ class EmployeeController extends Controller
         return view('employee_edit', compact('user'));
     }
 
+    public function showUpdatePasswordForm() {
+        return view('employee/update_password');
+    }
+
+    public function updatePassword(){
+//        dd(\request()->all());
+    }
 }

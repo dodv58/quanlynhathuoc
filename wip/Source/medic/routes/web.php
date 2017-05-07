@@ -56,8 +56,8 @@ Route::get('login', 'Auth\LoginController@showLoginView')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::get('register', 'Auth\RegisterController@create');
 Route::post('register', 'Auth\RegisterController@store')->name('register');
-Route::get('pharmacy-register', 'Home\HomeController@showPharmacyRegister');
-Route::post('pharmacy-register', 'Home\HomeController@storePharmacy')->name('pharmacy-register');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('change-password', 'Employee\EmployeeController@showUpdatePasswordForm');
+Route::post('change-password', 'Employee\EmployeeController@updatePassword');
 
 Route::get('profile', 'Employee\EmployeeController@showProfile');

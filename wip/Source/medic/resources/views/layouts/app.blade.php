@@ -124,10 +124,10 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> Thông tin cá nhân</a></li>
+                                    <li><a href="/profile"> Thông tin cá nhân</a></li>
                                     <li>
-                                        <a href="javascript:;">
-                                            <span>Thiết lập</span>
+                                        <a href="/change-password">
+                                            <span>Đổi mật khẩu</span>
                                         </a>
                                     </li>
                                     <li><a href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a>
@@ -144,8 +144,9 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-    @yield('content')
-    <!-- /page content -->
+        @yield('content')
+        <!-- /page content -->
+
 
         <!-- footer content -->
         <footer>
