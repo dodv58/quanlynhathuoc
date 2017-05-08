@@ -161,5 +161,4 @@ class HomeController extends Controller
 
         return $list;
     }
-
 }
