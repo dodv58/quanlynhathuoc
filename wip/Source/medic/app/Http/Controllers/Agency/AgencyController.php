@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\SubPharmacy;
+use App\Models\BillExport;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AgencyController extends Controller
 {
@@ -32,17 +36,45 @@ class AgencyController extends Controller
         $agency = SubPharmacy::find($id);
         $employees = User::where('sub_pharmacy_id', $agency->id)->get();
 
+        $totalSaleAmount = BillExport::join('sub_pharmacies', 'sub_pharmacies.id', '=', 'bill_exports.sub_pharmacy_id')
+            ->select(DB::raw('DAY(bill_exports.created_at) as day'), DB::raw('MONTH(bill_exports.created_at) as month')
+                , DB::raw('YEAR(bill_exports.created_at) as year'), DB::raw('SUM(bill_exports.total_amount) as total'))
+            ->where([
+                ['sub_pharmacies.id', '=', $id],
+                ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
+                ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
+            ])
+            ->groupBy('year', 'month', 'day')
+            ->get();
+
+        $totalSaleAmount = $totalSaleAmount->toArray();
+        $daysInMonth = $this->getDaysByMonth();
+        $data = [];
+
+        foreach ($daysInMonth as $day) {
+            $item = ['label' => $day['date'] . '/' . $day['month'], 'data' => 0];
+            $key = array_filter($totalSaleAmount, function ($var) use ($day) {
+                return $var['year'] == intval($day['year'])
+                    && $var['month'] == intval($day['month'])
+                    && $var['day'] == intval($day['date']);
+            });
+            if (!empty($key)) {
+                $item['data'] = intval(reset($key)['total']);
+            }
+            $data[] = $item;
+        }
+
         $chartjs = app()->chartjs
             ->name('barChartTest')
             ->type('bar')
-            ->size(['width' => 818, 'height' => 200])
-            ->labels(['01/4', '02/4', '03/4', '04/4', '05/4', '06/4', '07/4', '08/4', '09/4', '10/4', '11/4', '12/4', '13/4', '14/4', '15/4', '16/4', '17/4', '18/4', '19/4', '20/4', '21/4', '22/4', '23/4'])
+            ->size(['width' => 818, 'height' => 250])
+            ->labels(array_column($data, 'label'))
             ->datasets([
                 [
                     "label" => "Doanh thu",
                     'backgroundColor' => "#26B99A",
-                    'data' => [1500, 1200, 1400, 2000, 1200, 1100, 1320, 1100, 1568, 1242, 1090, 1500, 2000, 1900, 1900, 1100, 1600, 1393, 1090, 1400, 1500, 1700, 1700],
-                    'hoverBackgroundColor' => "#36CAAB"
+                    'data' => array_column($data, 'data'),
+                    'hoverBackgroundColor' => "#36CAAB",
                 ],
             ])
             ->options([]);
@@ -75,5 +107,23 @@ class AgencyController extends Controller
             }
         }
         return $id;
+    }
+
+    private function getDaysByMonth($year = null, $month = null) {
+        if ($year === null || $month === null) {
+            $year = date('Y');
+            $month = date('m');
+        }
+
+        $start_date = "01-" . $month . "-" . $year;
+        $start_time = strtotime($start_date);
+
+        $end_time = strtotime("+1 month", $start_time);
+
+        for ($i = $start_time; $i < $end_time; $i += 86400) {
+            $list[] = ['year' => $year, 'month' => $month, 'date' => date('d', $i), 'day' => date('D', $i)];
+        }
+
+        return $list;
     }
 }
