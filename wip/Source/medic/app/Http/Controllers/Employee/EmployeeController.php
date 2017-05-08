@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\SubPharmacy;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Mockery\Exception;
 use Carbon\Carbon;
 
@@ -119,5 +120,21 @@ class EmployeeController extends Controller
 
     public function updatePassword(){
 //        dd(\request()->all());
+        try{
+            DB::beginTransaction();
+            $user = auth()->user();
+            if(Hash::check(\request('current_password'), $user->getAuthPassword())){
+                $user->password = bcrypt(\request('current_password'));
+                return redirect()->back()->with(['success' => '1']);
+            }
+            else{
+                return redirect()->back()->withInput()->withErrors(['current_password' => 'Sai mật khẩu']);
+            }
+
+        }
+        catch (\Exception $exception){
+            DB::rollBack();
+            throw $exception;
+        }
     }
 }
