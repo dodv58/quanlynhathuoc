@@ -41,42 +41,24 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="col-md-12 col-sm-12 col-xs-6">
-                            <div>
-                                <p>Chi nhánh Cầu Giấy</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="80"></div>
+                        @foreach($revenueOfAgencies as $revenue)
+                                @if (($loop->iteration % 2) == 0)
+                                    <div class="col-md-12 col-sm-12 col-xs-6">
+                                @endif
+
+                                <div>
+                                    <p>{{$revenue['name']}}</p>
+                                    <div class="">
+                                        <div class="progress progress_sm" style="width: 76%;">
+                                            <div class="progress-bar " role="progressbar" data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <p>Chi nhánh Hai Bà Trưng</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="60"></div>
+
+                                @if (($loop->iteration % 2) == 0)
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-6">
-                            <div>
-                                <p>Chi Nhánh Đống Đa</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="40"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <p>Chi Nhánh Thành Công</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="50"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                @endif
+                        @endforeach
 
                     </div>
                     <div class="clearfix"></div>
