@@ -42,15 +42,16 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
                         </div>
 
                         @foreach($revenueOfAgencies as $revenue)
-                                @if (($loop->iteration % 2) == 0)
+                                @if (($loop->iteration % 2) == 1)
                                     <div class="col-md-12 col-sm-12 col-xs-6">
                                 @endif
 
                                 <div>
-                                    <p>{{$revenue['name']}}</p>
+                                    <p>{{$revenue['name']}} : {{$revenue['total']}}</p>
                                     <div class="">
                                         <div class="progress progress_sm" style="width: 76%;">
-                                            <div class="progress-bar " role="progressbar" data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
+                                            <div class="progress-bar " role="progressbar"
+                                                 data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
                                         </div>
                                     </div>
                                 </div>
