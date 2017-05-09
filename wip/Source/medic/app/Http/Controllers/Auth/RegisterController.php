@@ -68,7 +68,18 @@ class RegisterController extends Controller
 //        dd(request()->all());
         try {
             DB::beginTransaction();
+
+            $pharmacy = Pharmacy::create([
+                'name' => request('pharmacy-name'),
+                'email' => request('email'),
+                'account' => request('account'),
+                'address' => request('pharmacy-address'),
+                'phone' => request('pharmacy-phone'),
+                'owner_name' => request('name')
+            ]);
+
             $user = User::create([
+                'pharmacy_id' => $pharmacy->id,
                 'name' => request('name'),
                 'email' => request('email'),
                 'account' => request('account'),
@@ -79,15 +90,6 @@ class RegisterController extends Controller
             ]);
 
             auth()->login($user);
-
-            $pharmacy = Pharmacy::create([
-                'name' => request('pharmacy-name'),
-                'email' => request('email'),
-                'account' => request('account'),
-                'address' => request('pharmacy-address'),
-                'phone' => request('pharmacy-phone'),
-                'owner_name' => auth()->user()->name
-            ]);
 
             $sub_pharmacy = SubPharmacy::create([
                 'name' => $pharmacy->name,
