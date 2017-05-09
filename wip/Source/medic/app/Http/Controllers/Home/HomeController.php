@@ -59,15 +59,14 @@ class HomeController extends Controller
 
             // tạo bảng doanh thu
             $revenueOfAgencies = BillExport::join('sub_pharmacies', 'sub_pharmacies.id', '=', 'bill_exports.sub_pharmacy_id')
-                ->select(DB::raw('DAY(bill_exports.created_at) as day'), DB::raw('MONTH(bill_exports.created_at) as month')
-                    , DB::raw('YEAR(bill_exports.created_at) as year'), DB::raw('SUM(bill_exports.total_amount) as total'),
+                ->select(DB::raw('SUM(bill_exports.total_amount) as total'),
                     'sub_pharmacies.name')
                 ->where([
                     ['sub_pharmacies.pharmacy_id', '=', Auth::user()->pharmacy_id],
                     ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
                     ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
                 ])
-                ->groupBy('year', 'month', 'day', 'sub_pharmacies.name')
+                ->groupBy('sub_pharmacies.name')
                 ->get();
 
             $totalRevenue = 0;
@@ -75,11 +74,22 @@ class HomeController extends Controller
                 $totalRevenue += $revenue['total'];
             }
 
+            // Tạo data vẽ biểu đồ doanh thu tháng này
+            $totalRevenues = BillExport::join('sub_pharmacies', 'sub_pharmacies.id', '=', 'bill_exports.sub_pharmacy_id')
+                ->select(DB::raw('DAY(bill_exports.created_at) as day'), DB::raw('MONTH(bill_exports.created_at) as month')
+                    , DB::raw('YEAR(bill_exports.created_at) as year'), DB::raw('SUM(bill_exports.total_amount) as total'))
+                ->where([
+                    ['sub_pharmacies.pharmacy_id', '=', Auth::user()->pharmacy_id],
+                    ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
+                    ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
+                ])
+                ->groupBy('year', 'month', 'day')
+                ->get();
             $daysInMonth = $this->getDaysByMonth();
             $data = [];
             foreach ($daysInMonth as $day) {
                 $item = ['label' => $day['date'] . '/' . $day['month'], 'data' => 0];
-                $key = array_filter($revenueOfAgencies->toArray(), function ($var) use ($day) {
+                $key = array_filter($totalRevenues->toArray(), function ($var) use ($day) {
                     return $var['year'] == intval($day['year'])
                         && $var['month'] == intval($day['month'])
                         && $var['day'] == intval($day['date']);
