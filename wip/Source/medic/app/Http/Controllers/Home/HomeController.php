@@ -143,28 +143,6 @@ class HomeController extends Controller
 
     }
 
-    public function example() {
-        $chartjs = app()->chartjs
-            ->name('barChartTest')
-            ->type('bar')
-            ->size(['width' => 818, 'height' => 350])
-            ->labels(['Label x', 'Label y'])
-            ->datasets([
-                [
-                    "label" => "My First dataset",
-                    'backgroundColor' => ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                    'data' => [69, 59],
-                ],
-                [
-                    "label" => "My second dataset",
-                    'backgroundColor' => ['rgba(255, 99, 132, 0.3)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [65, 12],
-                ],
-            ])
-            ->options([]);
-
-        return view('example', compact('chartjs'));
-    }
 
     private function getDaysByMonth($year = null, $month = null) {
         if ($year === null || $month === null) {
@@ -183,5 +161,4 @@ class HomeController extends Controller
 
         return $list;
     }
-
 }

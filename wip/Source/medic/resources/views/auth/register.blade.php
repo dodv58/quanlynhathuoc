@@ -25,7 +25,7 @@
                                 <label for="name" class="col-md-4 control-label">Họ Tên</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="191" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -39,7 +39,7 @@
                                 <label for="account" class="col-md-4 control-label">Tài khoản</label>
 
                                 <div class="col-md-6">
-                                    <input id="account" type="text" class="form-control" name="account"  required autofocus>
+                                    <input id="account" type="text" class="form-control" name="account" maxlength="191" required autofocus>
                                     {{--<input type="text" id="account" name="account" pattern="[A-Za-z0-9_]+" required="required" class="form-control col-md-7 col-xs-12">--}}
                                     <span class="pull-right text-danger" id="account-feedback"></span>
                                     @if ($errors->has('account'))
@@ -54,7 +54,7 @@
                                 <label for="email" class="col-md-4 control-label">Địa chỉ E-Mail</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" maxlength="191" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -68,7 +68,7 @@
                                 <label for="password" class="col-md-4 control-label">Mật khẩu</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
+                                    <input id="password" type="password" class="form-control" name="password" maxlength="191" required>
 
                                     @if ($errors->has('password'))
                                         <span class="help-block">
@@ -82,7 +82,7 @@
                                 <label for="password-confirm" class="col-md-4 control-label">Xác nhận mật khẩu</label>
 
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" maxlength="191" required>
                                 </div>
                             </div>
 
@@ -90,7 +90,7 @@
                                 <label for="phone" class="col-md-4 control-label">Số điện thoại</label>
 
                                 <div class="col-md-6">
-                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
+                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" maxlength="15" required autofocus>
 
                                     @if ($errors->has('phone'))
                                         <span class="help-block">
@@ -104,7 +104,7 @@
                                 <label for="address" class="col-md-4 control-label">Địa chỉ</label>
 
                                 <div class="col-md-6">
-                                    <input id="address" type="text" class="form-control" name="address" value="{{ old('address') }}" required autofocus>
+                                    <input id="address" type="text" class="form-control" name="address" value="{{ old('address') }}" maxlength="191" required autofocus>
 
                                     @if ($errors->has('address'))
                                         <span class="help-block">
@@ -121,7 +121,7 @@
                                 <label for="pharmacy-name" class="col-md-4 control-label">Tên nhà thuốc</label>
 
                                 <div class="col-md-6">
-                                    <input id="pharmacy-name" type="text" class="form-control" name="pharmacy-name" value="{{ old('pharmacy-name') }}" required autofocus>
+                                    <input id="pharmacy-name" type="text" class="form-control" name="pharmacy-name" value="{{ old('pharmacy-name') }}" maxlength="45" required autofocus>
 
                                     @if ($errors->has('pharmacy-name'))
                                         <span class="help-block">
@@ -134,7 +134,7 @@
                                 <label for="pharmacy-phone" class="col-md-4 control-label">Số điện thoại</label>
 
                                 <div class="col-md-6">
-                                    <input id="pharmacy-phone" type="text" class="form-control" name="pharmacy-phone" value="{{ old('pharmacy-phone') }}" required autofocus>
+                                    <input id="pharmacy-phone" type="text" class="form-control" name="pharmacy-phone" value="{{ old('pharmacy-phone') }}" maxlength="15" required autofocus>
 
                                     @if ($errors->has('pharmacy-phone'))
                                         <span class="help-block">
@@ -147,7 +147,7 @@
                                 <label for="pharmacy-address" class="col-md-4 control-label">Địa chỉ</label>
 
                                 <div class="col-md-6">
-                                    <input id="pharmacy-address" type="text" class="form-control" name="pharmacy-address" value="{{ old('address') }}" required autofocus>
+                                    <input id="pharmacy-address" type="text" class="form-control" name="pharmacy-address" value="{{ old('address') }}" maxlength="191" required autofocus>
 
                                     @if ($errors->has('pharmacy-address'))
                                         <span class="help-block">

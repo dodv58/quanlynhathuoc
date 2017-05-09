@@ -40,8 +40,8 @@
 			    </li>
 			@else
 			    <li>
-			    <button class="btn btn-lg btn-white btn-register link"><a href="{{ url('/register') }}">Register</a></button>
-			    <button class="btn btn-lg btn-white btn-register link"><a href="{{ url('/login') }}">Login</a></button>
+			    <button class="btn btn-lg btn-white btn-register link"><a href="{{ url('/register') }}">Đăng Ký</a></button>
+			    <button class="btn btn-lg btn-white btn-register link"><a href="{{ url('/login') }}">Đăng Nhập</a></button>
 			    </li>
 			@endif
 			    <div class="col-md-10 col-md-offset-1 mt">

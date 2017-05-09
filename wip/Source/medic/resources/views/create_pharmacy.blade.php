@@ -45,7 +45,7 @@
                                 <label for="name" class="col-md-4 control-label">Tên nhà thuốc</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="45" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -58,7 +58,7 @@
                                 <label for="account" class="col-md-4 control-label">Account</label>
 
                                 <div class="col-md-6">
-                                    <input id="account" type="text" class="form-control" name="account" value="{{ old('account') }}" required autofocus>
+                                    <input id="account" type="text" class="form-control" name="account" value="{{ old('account') }}" maxlength="191" required autofocus>
 
                                     @if ($errors->has('account'))
                                         <span class="help-block">
@@ -72,7 +72,7 @@
                                 <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" maxlength="191" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -87,7 +87,7 @@
                                 <label for="phone" class="col-md-4 control-label">Số điện thoại</label>
 
                                 <div class="col-md-6">
-                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
+                                    <input id="phone" type="text" class="form-control" name="phone" value="{{ old('phone') }}" maxlength="15" required autofocus>
 
                                     @if ($errors->has('phone'))
                                         <span class="help-block">
@@ -101,7 +101,7 @@
                                 <label for="address" class="col-md-4 control-label">Địa chỉ</label>
 
                                 <div class="col-md-6">
-                                    <input id="address" type="text" class="form-control" name="address" value="{{ old('address') }}" required autofocus>
+                                    <input id="address" type="text" class="form-control" name="address" value="{{ old('address') }}" maxlength="191" required autofocus>
 
                                     @if ($errors->has('address'))
                                         <span class="help-block">
