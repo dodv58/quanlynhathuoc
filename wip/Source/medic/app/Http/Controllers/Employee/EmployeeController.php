@@ -84,12 +84,14 @@ class EmployeeController extends Controller
 
     public function updateEmployee($account){
         $user = User::where('account', $account)->first();
+//        dd(\request()->all());
         if($user) {
-            $user->sub_pharmacy_id = SubPharmacy::where('name', request('agency'))->first()->id;
+            $user->sub_pharmacy_id = request('agency');
             $user->birthday = \request('birthday');
             $user->address = request('address');
             $user->phone = request('phone');
-            if (request('role') == 'manager') {
+            $user->birthday = \request('birthday');
+            if (request('role') == "manager") {
                 $user->role = 1;
             } else {
                 $user->role = 2;

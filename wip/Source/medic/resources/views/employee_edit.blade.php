@@ -28,21 +28,21 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên</label>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" class="form-control" readonly="readonly" placeholder="{{ $user->name }}">
+                                    <input type="text" class="form-control" readonly="readonly" value="{{ $user->name }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Account</label>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" class="form-control" readonly="readonly" placeholder={{ $user->account }}>
+                                    <input type="text" class="form-control" readonly value={{ $user->account }}>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" class="form-control" readonly="readonly" placeholder={{ $user->email }}>
+                                    <input type="text" class="form-control" readonly="readonly" value={{ $user->email }}>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -62,16 +62,16 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" pattern="[0-9-/]+" required="required" type="text" value="{{ $user->birthday }}">
+                                    <input id="birthday" name="birthday" class="date-picker form-control col-md-7 col-xs-12" pattern="[0-9-/]+" required="required" type="text" value="{{ $user->birthday }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agency">Chi nhánh <span class="required">*</span>
                                 </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" id="agency" name="agency" required="required">
+                                <div class="col-md-6 col-sm-6 col-xs-12" >
+                                    <select class="form-control" id="agency" name="agency" required="required" @if(auth()->user()->role == 2 ) disabled @endif>
                                         @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)
-                                            <option>{{ $agency->name }}</option>
+                                            <option value="{{ $agency->id }}">{{ $agency->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -94,9 +94,9 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="role">Vai trò <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control" id="role" required="required">
-                                        <option value="manager">Nhân viên</option>
-                                        <option value="employee">Quản lý</option>
+                                    <select class="form-control" id="role" required="required" name="role" @if(auth()->user()->role == 2) disabled @endif>
+                                        <option value="employee">Nhân viên</option>
+                                        <option value="manager">Quản lý</option>
                                     </select>
                                 </div>
                             </div>
