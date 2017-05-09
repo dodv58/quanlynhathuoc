@@ -85,6 +85,7 @@ class HomeController extends Controller
                 $data[] = $item;
             }
 
+
             $chartjs = app()->chartjs
                 ->name('barChartTest')
                 ->type('bar')

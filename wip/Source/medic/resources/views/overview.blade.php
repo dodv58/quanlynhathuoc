@@ -42,41 +42,20 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
                         </div>
 
                         <div class="col-md-12 col-sm-12 col-xs-6">
-                            <div>
-                                <p>Chi nhánh Cầu Giấy</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="80"></div>
+                            @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)
+                                <div>
+                                    <p>Chi nhánh {{ $agency->name }}</p>
+                                    <div class="">
+                                        <div class="progress progress_sm" style="width: 76%;">
+                                            <div class="progress-bar " role="progressbar" data-transitiongoal=""></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <p>Chi nhánh Hai Bà Trưng</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="60"></div>
-                                    </div>
-                                </div>
-                            </div>
+
+                            @endforeach
+
                         </div>
-                        <div class="col-md-12 col-sm-12 col-xs-6">
-                            <div>
-                                <p>Chi Nhánh Đống Đa</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="40"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <p>Chi Nhánh Thành Công</p>
-                                <div class="">
-                                    <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar " role="progressbar" data-transitiongoal="50"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
 
                     </div>
                     <div class="clearfix"></div>
@@ -190,6 +169,7 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
 @endsection
 
 @section('jsLib')
-    <script src="{{ asset('js/custom.min.js') }}"></script>
     <script src="{{ asset('vendors/bower_components/bootstrap-progressbar/bootstrap-progressbar.js') }}"></script>
+    <script src="{{ asset('js/custom.min.js') }}"></script>
+
 @endsection
