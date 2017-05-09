@@ -41,20 +41,40 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="col-md-12 col-sm-12 col-xs-6">
-                            @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)
+{{--<<<<<<< HEAD--}}
+                        {{--<div class="col-md-12 col-sm-12 col-xs-6">--}}
+                            {{--@foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)--}}
+                                {{--<div>--}}
+                                    {{--<p>Chi nhánh {{ $agency->name }}</p>--}}
+                                    {{--<div class="">--}}
+                                        {{--<div class="progress progress_sm" style="width: 76%;">--}}
+                                            {{--<div class="progress-bar " role="progressbar" data-transitiongoal=""></div>--}}
+{{--=======--}}
+                        @foreach($revenueOfAgencies as $revenue)
+                                @if (($loop->iteration % 2) == 0)
+                                    <div class="col-md-12 col-sm-12 col-xs-6">
+                                @endif
+
                                 <div>
-                                    <p>Chi nhánh {{ $agency->name }}</p>
+                                    <p>{{$revenue['name']}}</p>
                                     <div class="">
                                         <div class="progress progress_sm" style="width: 76%;">
-                                            <div class="progress-bar " role="progressbar" data-transitiongoal=""></div>
+                                            <div class="progress-bar " role="progressbar" data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
+{{-->>>>>>> c555d5e588ece1a67e4f8139cfc2da88c6ad3fcb--}}
                                         </div>
                                     </div>
                                 </div>
 
-                            @endforeach
+{{--<<<<<<< HEAD--}}
+                            {{--@endforeach--}}
 
-                        </div>
+                        {{--</div>--}}
+{{--=======--}}
+                                @if (($loop->iteration % 2) == 0)
+                                    </div>
+                                @endif
+                        @endforeach
+{{-->>>>>>> c555d5e588ece1a67e4f8139cfc2da88c6ad3fcb--}}
 
 
                     </div>
