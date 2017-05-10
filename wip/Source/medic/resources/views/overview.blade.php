@@ -8,8 +8,8 @@
 
 @extends('layouts.app')
 @php
-$startOfMonth = \Carbon\Carbon::now()->startOfMonth()->format('d/m/Y');
-$endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
+    $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->format('d/m/Y');
+    $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
 @endphp
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -31,9 +31,7 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
                         </div>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-12">
-                        <div id="chart_plot_01" class="demo-placeholder">
-                                {!! $chartjs->render() !!}
-                        </div>
+                            {!! $chartjs->render() !!}
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
                         <div class="x_title">
@@ -43,23 +41,23 @@ $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
 
 
                         @foreach($revenueOfAgencies as $revenue)
-                                @if (($loop->iteration % 2) == 1)
-                                    <div class="col-md-12 col-sm-12 col-xs-6">
-                                @endif
+                            @if (($loop->iteration % 2) == 1)
+                                <div class="col-md-12 col-sm-12 col-xs-6">
+                                    @endif
 
-                                <div>
-                                    <p>{{$revenue['name']}} : {{$revenue['total']}}</p>
-                                    <div class="">
-                                        <div class="progress progress_sm" style="width: 76%;">
-                                            <div class="progress-bar " role="progressbar"
-                                                 data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
+                                    <div>
+                                        <p>{{$revenue['name']}} : {{$revenue['total']}}</p>
+                                        <div class="">
+                                            <div class="progress progress_sm" style="width: 76%;">
+                                                <div class="progress-bar " role="progressbar"
+                                                     data-transitiongoal="{{$revenue['total'] / $totalRevenue * 100}}"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                @if (($loop->iteration % 2) == 0)
-                                    </div>
-                                @endif
+                                    @if (($loop->iteration % 2) == 0 || $loop->last)
+                                </div>
+                            @endif
                         @endforeach
 
 
