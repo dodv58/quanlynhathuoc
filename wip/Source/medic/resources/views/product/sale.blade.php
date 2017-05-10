@@ -187,8 +187,8 @@
             return e.which !== 13 && e.keyCode !== 13;
         });
 
-        $("#txtReceivedAmount").change(function () {
-            $("#lbBackAmount").html(totalAmount - parseInt($(this).val()));
+        $("#txtReceivedAmount").keyup(function () {
+            updateBackAmount();
         });
 
         $(document).on("click", "button.btnRemoveProduct", function (e) {
@@ -243,7 +243,10 @@
             $("#lbTotalAmount").html(totalAmount);
             $("#lbTotalAmount2").html(totalAmount);
             $("#txtTotalAmount").val(totalAmount);
-            $("#lbBackAmount").html(totalAmount - parseInt($("#txtReceivedAmount").val()));
+        }
+        
+        function updateBackAmount() {
+            $("#lbBackAmount").html(parseInt($("#txtReceivedAmount").val()) - totalAmount);
         }
     </script>
 @endsection
