@@ -71,6 +71,12 @@ function init_sidebar() {
         $RIGHT_COL.css('min-height', contentHeight);
     };
 
+    var setClass = function () {
+        var menuClass = sessionStorage.getItem('menu_toggle');
+        $BODY.removeClass('nav-md');
+        $BODY.addClass(menuClass != null && menuClass != '' ? menuClass : 'nav-md');
+    };
+
     $SIDEBAR_MENU.find('a').on('click', function (ev) {
         console.log('clicked - sidebar_menu');
         var $li = $(this).parent();
@@ -112,6 +118,11 @@ function init_sidebar() {
         // }
 
         $BODY.toggleClass('nav-md nav-sm');
+        if ($BODY.hasClass('nav-md')) {
+            sessionStorage.setItem('menu_toggle', 'nav-md');
+        } else {
+            sessionStorage.setItem('menu_toggle', 'nav-sm');
+        }
 
         setContentHeight();
     });
@@ -131,6 +142,7 @@ function init_sidebar() {
     });
 
     setContentHeight();
+    setClass();
 
     // fixed sidebar
     if ($.fn.mCustomScrollbar) {
@@ -146,6 +158,28 @@ function init_sidebar() {
 var randNum = function () {
     return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
 };
+
+// customize jquery validation
+function init_validator() {
+    $.extend($.validator.messages, {
+        required: "Mục này không được để trống.",
+        remote: "Please fix this field.",
+        email: "Sai định dạng email.",
+        url: "Sai định dạng URL.",
+        date: "Sai định dạng ngày tháng, thời gian.",
+        dateISO: "Please enter a valid date ( ISO ).",
+        number: "Mục này chỉ nhập số.",
+        digits: "Mục này chỉ nhập số nguyên dương.",
+        equalTo: "Xin hãy nhập chính xác giá trị.",
+        maxlength: $.validator.format("Xin hãy nhập tối đa {0} kí tự."),
+        minlength: $.validator.format("Xin hãy nhập tối thiểu {0} kí tự."),
+        rangelength: $.validator.format("Chỉ nhập từ {0} đến {1} kí tự."),
+        range: $.validator.format("Xin hãy nhập khoảng từ {0} đến {1}."),
+        max: $.validator.format("Xin hãy nhập giá trị tối đa là {0}."),
+        min: $.validator.format("Xin hãy nhập giá trị tối thiểu là {0}."),
+        step: $.validator.format("Please enter a multiple of {0}.")
+    });
+}
 
 
 // Panel toolbox
@@ -288,4 +322,5 @@ $(document).ready(function () {
 // init all
 $(document).ready(function () {
     init_sidebar();
+    init_validator();
 });

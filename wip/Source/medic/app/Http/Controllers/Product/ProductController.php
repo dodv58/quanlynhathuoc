@@ -38,9 +38,11 @@ class ProductController extends Controller
         $status = $request->input('tinhtrang');
 
         $whereConditions = [
-            ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ['products.pharmacy_id', '=', Auth::user()->pharmacy_id],
         ];
+        if(Auth::user()->role === 2){
+            array_push($whereConditions, ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id]);
+        }
 
         if (!empty($searchString)) {
             array_push($whereConditions, ['products.name', 'like', '%' . $searchString . '%']);
@@ -82,7 +84,7 @@ class ProductController extends Controller
         $shipments = Shipment::join('bill_imports', 'bill_imports.id', '=', 'shipments.bill_import_id')
             ->where([
                 ['shipments.product_id', '=', $id],
-                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
+//                ['bill_imports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])->orderBy('shipments.created_at', 'desc')->get();
 
         $saleHistories = Shipment::join('bill_export_shipment', 'shipments.id', '=', 'bill_export_shipment.shipment_id')
@@ -90,7 +92,7 @@ class ProductController extends Controller
             ->join('users', 'users.id', '=', 'bill_exports.creator_id')
             ->where([
                 ['shipments.product_id', '=', $id],
-                ['bill_exports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
+//                ['bill_exports.sub_pharmacy_id', '=', Auth::user()->sub_pharmacy_id],
             ])
             ->select('shipments.id', 'shipments.sale_price', 'shipments.bill_import_id', 'shipments.expire_date', 'bill_export_shipment.bill_export_id',
                 'bill_export_shipment.quantity', 'bill_exports.created_at', 'bill_exports.creator_id', 'users.name as creator_name')
