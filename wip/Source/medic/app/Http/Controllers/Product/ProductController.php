@@ -99,10 +99,30 @@ class ProductController extends Controller
             ->orderBy('bill_exports.created_at', 'desc')
             ->get();
 
+        $totalSale = [
+            'total' => 0,
+            'week' => 0,
+            'today' => 0
+        ];
+        $firstDateInWeek = Carbon::now()->startOfWeek();
+        $currentDate = Carbon::now();
+        foreach ($saleHistories as $sale){
+            $totalSale['total'] += $sale['quantity'];
+            $soldDate = Carbon::parse($sale['created_at']);
+            if($soldDate >= $firstDateInWeek){
+                $totalSale['week'] += $sale['quantity'];
+            }
+            if($soldDate >= $currentDate){
+                $totalSale['today'] += $sale['quantity'];
+            }
+        }
+
+
         return view('product.detail')->with('data', [
             'product' => $product,
             'shipments' => $shipments,
             'saleHistories' => $saleHistories,
+            'totalSale' => $totalSale
         ]);
     }
 
