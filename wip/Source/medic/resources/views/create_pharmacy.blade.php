@@ -132,7 +132,5 @@
 <script src="{{ asset('vendors/pace/pace.min.js') }}"></script>
 <script src="{{ asset('vendors/moment/moment.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-{{-- Custom Theme Scripts --}}
-<script src="{{ asset('js/common.js') }}"></script>
 </body>
 </html>

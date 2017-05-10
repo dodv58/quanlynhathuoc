@@ -173,7 +173,5 @@
 @endsection
 
 @section('jsLib')
-    <script src="{{ asset('js/custom.min.js') }}"></script>
     <script src="{{ asset('vendors/bower_components/bootstrap-progressbar/bootstrap-progressbar.js') }}"></script>
-
 @endsection
