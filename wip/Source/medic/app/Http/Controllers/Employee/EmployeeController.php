@@ -71,6 +71,9 @@ class EmployeeController extends Controller
     }
 
     public function editEmployee($account) {
+        if(auth()->user()->role != 1) {
+            return redirect()->home();
+        }
 //        $user = new User;
         $user = User::where('account', $account)->first();
 
@@ -78,11 +81,17 @@ class EmployeeController extends Controller
     }
 
     public function deleteEmployee($account){
+        if(auth()->user()->role != 1) {
+            return redirect()->home();
+        }
         User::where('account', $account)->delete();
         return redirect('/employee');
     }
 
     public function updateEmployee($account){
+        if(auth()->user()->role != 1) {
+            return redirect()->home();
+        }
         $user = User::where('account', $account)->first();
 //        dd(\request()->all());
         if($user) {
