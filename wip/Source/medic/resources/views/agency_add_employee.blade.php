@@ -26,7 +26,7 @@
                                 <th>Nhân viên</th>
                                 <th>Account</th>
                                 <th>Chi nhánh</th>
-                                <th>Giờ làm việc</th>
+                                <th>Vai trò</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -36,7 +36,7 @@
                                     <td><a href="#">{{ $user->name }}</a></td>
                                     <td>{{ $user->account }}</td>
                                     <td>{{ \App\Models\SubPharmacy::find($user->sub_pharmacy_id)->name }}</td>
-                                    <td>8:00 - 12:00</td>
+                                    <td>@if($user->role == 1) Quản lý @else Nhân viên @endif </td>
                                 </tr>
                             @endforeach
 

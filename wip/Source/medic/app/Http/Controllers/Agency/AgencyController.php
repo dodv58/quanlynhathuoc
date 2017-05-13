@@ -34,7 +34,7 @@ class AgencyController extends Controller
 
     public function showAgency($id){
         $agency = SubPharmacy::find($id);
-        $employees = User::where('sub_pharmacy_id', $agency->id)->get();
+        $employees = User::where('sub_pharmacy_id', $agency->id)->orderby('role')->get();
 
         $totalSaleAmount = BillExport::join('sub_pharmacies', 'sub_pharmacies.id', '=', 'bill_exports.sub_pharmacy_id')
             ->select(DB::raw('DAY(bill_exports.created_at) as day'), DB::raw('MONTH(bill_exports.created_at) as month')
