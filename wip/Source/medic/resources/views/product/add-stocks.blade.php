@@ -75,7 +75,7 @@
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <select class="form-control" name="categoryId" id="ddlCategoryId"
-                                                    readonly="">
+                                                    readonly="" disabled>
                                                 @foreach($categories as $category)
                                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                                 @endforeach
@@ -118,11 +118,21 @@
                                             Đơn vị bán <span class="required">*</span>
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <select class="form-control" id="ddlSaleUnit" name="saleUnit" readonly="">
+                                            <select class="form-control" id="ddlSaleUnit" name="saleUnit" readonly="" disabled>
                                                 <option value="Hộp">Hộp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Viên">Viên</option>
+                                                <option value="Ống">Ống</option>
+                                                <option value="Chai">Chai</option>
                                                 <option value="Tuýp">Tuýp</option>
+                                                <option value="Vỉ">Vỉ</option>
+                                                <option value="Lọ">Lọ</option>
+                                                <option value="Viên">Viên</option>
+                                                <option value="Gói">Gói</option>
+                                                <option value="Túi">Túi</option>
+                                                <option value="Bơm tiêm">Bơm tiêm</option>
+                                                <option value="Bút tiêm">Bút tiêm</option>
+                                                <option value="Kit">Kit</option>
+                                                <option value="Thùng">Thùng</option>
+                                                <option value="Chiếc">Chiếc</option>
                                             </select>
                                         </div>
                                     </div>
@@ -134,9 +144,19 @@
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <select class="form-control" id="ddlInputUnit" name="inputUnit">
                                                 <option value="Hộp">Hộp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Viên">Viên</option>
+                                                <option value="Ống">Ống</option>
+                                                <option value="Chai">Chai</option>
                                                 <option value="Tuýp">Tuýp</option>
+                                                <option value="Vỉ">Vỉ</option>
+                                                <option value="Lọ">Lọ</option>
+                                                <option value="Viên">Viên</option>
+                                                <option value="Gói">Gói</option>
+                                                <option value="Túi">Túi</option>
+                                                <option value="Bơm tiêm">Bơm tiêm</option>
+                                                <option value="Bút tiêm">Bút tiêm</option>
+                                                <option value="Kit">Kit</option>
+                                                <option value="Thùng">Thùng</option>
+                                                <option value="Chiếc">Chiếc</option>
                                             </select>
                                         </div>
                                     </div>
@@ -147,7 +167,7 @@
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <input type="text" id="txtSalePrice" name="salePrice"
                                                    required="required"
-                                                   class="form-control col-md-7 col-xs-12">
+                                                   class="form-control col-md-7 col-xs-12" placeholder="VND">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -296,9 +316,19 @@
                             <div class="col-md-8 col-sm-8 col-xs-12">
                                 <select class="form-control" id="ddlAddSaleUnit" name="saleUnit">
                                     <option value="Hộp">Hộp</option>
-                                    <option value="Vỉ">Vỉ</option>
-                                    <option value="Viên">Viên</option>
+                                    <option value="Ống">Ống</option>
+                                    <option value="Chai">Chai</option>
                                     <option value="Tuýp">Tuýp</option>
+                                    <option value="Vỉ">Vỉ</option>
+                                    <option value="Lọ">Lọ</option>
+                                    <option value="Viên">Viên</option>
+                                    <option value="Gói">Gói</option>
+                                    <option value="Túi">Túi</option>
+                                    <option value="Bơm tiêm">Bơm tiêm</option>
+                                    <option value="Bút tiêm">Bút tiêm</option>
+                                    <option value="Kit">Kit</option>
+                                    <option value="Thùng">Thùng</option>
+                                    <option value="Chiếc">Chiếc</option>
                                 </select>
                             </div>
                         </div>
@@ -308,7 +338,7 @@
                             <div class="col-md-8 col-sm-8 col-xs-12">
                                 <input type="text" id="txtAddSalePrice" name="salePrice"
                                        required
-                                       class="form-control col-md-7 col-xs-12">
+                                       class="form-control col-md-7 col-xs-12" placeholder="VND">
                             </div>
                         </div>
                         <div class="form-group">
@@ -581,6 +611,37 @@
         function updateProductInput() {
             $("#txtProducts").val(JSON.stringify(products));
         }
+
+        $("#txtInputPrice").ready(function (e) {
+            $inputUnit = $("#ddlInputUnit").val();
+            $("#txtInputPrice").attr("placeholder", "1 " + $inputUnit);
+        });
+
+        $("#txtExchangeValue").ready(function (e) {
+            $inputUnit = $("#ddlInputUnit").val();
+            $outputUnit = $("#ddlSaleUnit").val();
+            $("#txtExchangeValue").attr("placeholder", "Một " + $inputUnit + " bao nhiêu " + $outputUnit);
+        });
+
+        $("#txtQuantity").ready(function (e) {
+            $inputUnit = $("#ddlInputUnit").val();
+            $("#txtQuantity").attr("placeholder", "Theo đơn vị " + $inputUnit);
+        });
+
+        $("#ddlInputUnit").on('change', function (e) {
+            $inputUnit = $("#ddlInputUnit").val();
+            $outputUnit = $("#ddlSaleUnit").val();
+            $("#txtInputPrice").attr("placeholder", "1 " + $inputUnit);
+            $("#txtExchangeValue").attr("placeholder", "Một " + $inputUnit + " bao nhiêu " + $outputUnit);
+            $("#txtQuantity").attr("placeholder", "Theo đơn vị " + $inputUnit)
+        });
+
+        $("#ddlSaleUnit").on('change', function (e) {
+            $inputUnit = $("#ddlInputUnit").val();
+            $outputUnit = $("#ddlSaleUnit").val();
+            $("#txtInputPrice").attr("placeholder", "1 " + $inputUnit);
+            $("#txtExchangeValue").attr("placeholder", "Một " + $inputUnit + " bao nhiêu " + $outputUnit);
+        });
 
         init_daterangepicker();
     </script>

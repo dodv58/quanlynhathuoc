@@ -113,7 +113,6 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
-                            
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -126,6 +125,7 @@
                                 <th>Tên thuốc</th>
                                 <th>Hạn sử dụng</th>
                                 <th>Số lượng</th>
+                                <th>Đơn vị</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -135,6 +135,7 @@
                                     <td>{{$product['name']}}</td>
                                     <td>{{\Carbon\Carbon::parse($product['expire_date'])->format('d-m-Y')}}</td>
                                     <td>{{$product['quantity']}}</td>
+                                    <td>{{$product['unit']}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
