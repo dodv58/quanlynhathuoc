@@ -77,13 +77,13 @@
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#">Settings 1</a>
                                     </li>
                                     <li><a href="#">Settings 2</a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </li>
                             <li><a class="close-link"><i class="fa fa-close"></i></a>
                             </li>
@@ -125,13 +125,13 @@
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+<!--                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#">Settings 1</a>
                                     </li>
                                     <li><a href="#">Settings 2</a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </li>
                             <li><a class="close-link"><i class="fa fa-close"></i></a>
                             </li>
@@ -147,6 +147,7 @@
                                 <th>Tên thuốc</th>
                                 <th>Hạn sử dụng</th>
                                 <th>Số lượng</th>
+                                <th>Đơn vị</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -156,6 +157,7 @@
                                     <td>{{$product['name']}}</td>
                                     <td>{{\Carbon\Carbon::parse($product['expire_date'])->format('d-m-Y')}}</td>
                                     <td>{{$product['quantity']}}</td>
+                                    <td>{{$product['unit']}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
