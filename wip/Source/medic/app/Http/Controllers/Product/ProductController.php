@@ -8,6 +8,7 @@ use App\Models\BillExportShipment;
 use App\Models\BillImport;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductInputType;
 use App\Models\Shipment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -163,8 +164,9 @@ class ProductController extends Controller
             }
         }
         $categories = Category::all();
+        $inputTypes = ProductInputType::all();
 
-        return view('product.add-stocks')->with('categories', $categories);
+        return view('product.add-stocks')->with('categories', $categories)->with('inputTypes', $inputTypes);
     }
 
     public function addProduct(Request $request){

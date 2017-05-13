@@ -119,20 +119,9 @@
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <select class="form-control" id="ddlSaleUnit" name="saleUnit" readonly="" disabled>
-                                                <option value="Hộp">Hộp</option>
-                                                <option value="Ống">Ống</option>
-                                                <option value="Chai">Chai</option>
-                                                <option value="Tuýp">Tuýp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Lọ">Lọ</option>
-                                                <option value="Viên">Viên</option>
-                                                <option value="Gói">Gói</option>
-                                                <option value="Túi">Túi</option>
-                                                <option value="Bơm tiêm">Bơm tiêm</option>
-                                                <option value="Bút tiêm">Bút tiêm</option>
-                                                <option value="Kit">Kit</option>
-                                                <option value="Thùng">Thùng</option>
-                                                <option value="Chiếc">Chiếc</option>
+                                                @foreach($inputTypes as $inputType)
+                                                    <option value="{{$inputType->id}}">{{$inputType->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -143,20 +132,9 @@
                                         </label>
                                         <div class="col-md-8 col-sm-8 col-xs-12">
                                             <select class="form-control" id="ddlInputUnit" name="inputUnit">
-                                                <option value="Hộp">Hộp</option>
-                                                <option value="Ống">Ống</option>
-                                                <option value="Chai">Chai</option>
-                                                <option value="Tuýp">Tuýp</option>
-                                                <option value="Vỉ">Vỉ</option>
-                                                <option value="Lọ">Lọ</option>
-                                                <option value="Viên">Viên</option>
-                                                <option value="Gói">Gói</option>
-                                                <option value="Túi">Túi</option>
-                                                <option value="Bơm tiêm">Bơm tiêm</option>
-                                                <option value="Bút tiêm">Bút tiêm</option>
-                                                <option value="Kit">Kit</option>
-                                                <option value="Thùng">Thùng</option>
-                                                <option value="Chiếc">Chiếc</option>
+                                                @foreach($inputTypes as $inputType)
+                                                    <option value="{{$inputType->id}}">{{$inputType->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
