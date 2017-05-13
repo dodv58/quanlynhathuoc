@@ -71,7 +71,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
                                     <select class="form-control" id="agency" name="agency" required="required" @if(auth()->user()->role == 2 ) disabled @endif>
                                         @foreach(\App\Models\SubPharmacy::where('pharmacy_id', auth()->user()->pharmacy_id)->get() as $agency)
-                                            <option value="{{ $agency->id }}">{{ $agency->name }}</option>
+                                            <option value="{{ $agency->id }}" @if($user->sub_pharmacy_id == $agency->id ) selected @endif>{{ $agency->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -95,8 +95,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="role" required="required" name="role" @if(auth()->user()->role == 2) disabled @endif>
-                                        <option value="employee" @if(auth()->user()->role == 2) selected @endif>Nhân viên</option>
-                                        <option value="manager" @if(auth()->user()->role == 1) selected @endif>Quản lý</option>
+                                        <option value="employee" @if($user->role == 2) selected @endif>Nhân viên</option>
+                                        <option value="manager" @if($user->role == 1) selected @endif>Quản lý</option>
                                     </select>
                                 </div>
                             </div>

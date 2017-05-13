@@ -46,6 +46,27 @@
                                     <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">Mật khẩu</label>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="password" type="password" class="form-control" name="password" maxlength="191" required>
+
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password_confirm" class="control-label col-md-3 col-sm-3 col-xs-12">Xác nhận mật khẩu</label>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="password_confirm" type="password" class="form-control" name="password_confirm" maxlength="191" required>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12 " >Giới tính</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -158,6 +179,9 @@
                 rules: {
                     birthday: {
                         date: true
+                    },
+                    password_confirm: {
+                        equalTo : "#password"
                     }
                 }
             });

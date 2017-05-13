@@ -135,7 +135,9 @@ class EmployeeController extends Controller
             DB::beginTransaction();
             $user = auth()->user();
             if(Hash::check(\request('current_password'), $user->getAuthPassword())){
-                $user->password = bcrypt(\request('current_password'));
+                $user->password = bcrypt(\request('new_password'));
+                $user->save();
+                DB::commit();
                 return redirect()->back()->with(['success' => '1']);
             }
             else{

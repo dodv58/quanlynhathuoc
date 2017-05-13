@@ -84,6 +84,7 @@
     </div>
 
     <!-- Scripts -->
+    @yield('jslib')
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('vendors/pace/pace.min.js') }}"></script>
 

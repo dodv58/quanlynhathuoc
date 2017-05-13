@@ -18,7 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Đăng ký</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                        <form id="register_form" class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -79,10 +79,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Xác nhận mật khẩu</label>
+                                <label for="password_confirm" class="col-md-4 control-label">Xác nhận mật khẩu</label>
 
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" maxlength="191" required>
+                                    <input id="password_confirm" type="password" class="form-control" name="password_confirm" maxlength="191" required>
                                 </div>
                             </div>
 
@@ -171,33 +171,44 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#account').on('change', function () {
-            var txt = $('#account').val();
-            $.ajax({
-                type: "get",
-                url: '/employee/check-employee-existed',
-                data: {
-                    txt: txt
-                },
-                cache: false,
-                success: function (data) {
-                    if(data == 1){
-                        $('#account-form-group').removeClass('has-success').addClass('has-error')
-                        $('#account-feedback').html('Tài khoản đã tồn tại!')
-                    }
-                    else {
-                        $('#account-form-group').removeClass('has-error').addClass('has-success')
-                        $('#account-feedback').html('')
-                    }
+
+@endsection
+
+@section('jslib')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script>
+        $('#register_form').validate({
+            rules: {
+                password_confirm: {
+                    equalTo : "#password"
                 }
-            });
+            }
         });
-    })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#account').on('change', function () {
+                var txt = $('#account').val();
+                $.ajax({
+                    type: "get",
+                    url: '/employee/check-employee-existed',
+                    data: {
+                        txt: txt
+                    },
+                    cache: false,
+                    success: function (data) {
+                        if(data == 1){
+                            $('#account-form-group').removeClass('has-success').addClass('has-error')
+                            $('#account-feedback').html('Tài khoản đã tồn tại!')
+                        }
+                        else {
+                            $('#account-form-group').removeClass('has-error').addClass('has-success')
+                            $('#account-feedback').html('')
+                        }
+                    }
+                });
+            });
 
-
-
-</script>
-
+        });
+    </script>
 @endsection
