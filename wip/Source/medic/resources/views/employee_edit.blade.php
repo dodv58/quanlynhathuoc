@@ -95,8 +95,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="role" required="required" name="role" @if(auth()->user()->role == 2) disabled @endif>
-                                        <option value="employee">Nhân viên</option>
-                                        <option value="manager">Quản lý</option>
+                                        <option value="employee" @if(auth()->user()->role == 2) selected @endif>Nhân viên</option>
+                                        <option value="manager" @if(auth()->user()->role == 1) selected @endif>Quản lý</option>
                                     </select>
                                 </div>
                             </div>

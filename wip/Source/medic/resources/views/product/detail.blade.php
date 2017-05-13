@@ -4,6 +4,7 @@
     $shipments = $data['shipments'];
     $saleHistories = $data['saleHistories'];
     $product = $data['product'];
+    $totalSale = $data['totalSale'];
 @endphp
 
 @section('cssLib')
@@ -30,9 +31,9 @@
                                 <h2>Tên sản phẩm: {{$product["name"]}}</h2>
                             </div>
                             <div class="pull-right">
-                                <button class="btn btn-sm btn-info"><i class="fa fa-pencil"></i> Cập nhật</button>
-                                <button class="btn btn-sm btn-warning"><i class="fa fa-lock"></i> Ngừng bán</button>
-                                <button class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> Xóa</button>
+                                {{--<button class="btn btn-sm btn-info"><i class="fa fa-pencil"></i> Cập nhật</button>--}}
+                                {{--<button class="btn btn-sm btn-warning"><i class="fa fa-lock"></i> Ngừng bán</button>--}}
+                                {{--<button class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> Xóa</button>--}}
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -57,15 +58,15 @@
                                                 <ul class="stats-overview">
                                                     <li>
                                                         <span class="name"> Tổng đã bán </span>
-                                                        <span class="value text-success"> 100 </span>
+                                                        <span class="value text-success"> {{$totalSale['total']}} </span>
                                                     </li>
                                                     <li>
                                                         <span class="name"> Bán trong tuần </span>
-                                                        <span class="value text-success"> 10 </span>
+                                                        <span class="value text-success"> {{$totalSale['week']}} </span>
                                                     </li>
                                                     <li class="hidden-phone">
                                                         <span class="name"> Bán trong ngày </span>
-                                                        <span class="value text-success"> 2 </span>
+                                                        <span class="value text-success"> {{$totalSale['today']}} </span>
                                                     </li>
                                                 </ul>
                                                 <br />

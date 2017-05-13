@@ -166,8 +166,8 @@
 <script src="{{ asset('vendors/moment/moment.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script src="{{ asset('vendors/sweet-alert/sweetalert.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
+<script src="{{ asset('vendors/jquery.validation/jquery.validate.js') }}"></script>
+<script src="{{ asset('vendors/jquery.validation/additional-methods.min.js') }}"></script>
 
 @yield('jsLib')
 {{-- Custom Theme Scripts --}}

@@ -21,6 +21,12 @@
                 <div class="title_left">
                     <h3>Nhập hàng</h3>
                 </div>
+                <div class="title_right text-right">
+                    <button class="btn btn-sm btn-success addNewPopup" style="margin: 8px 0;">
+                        <i class="fa fa-plus"></i> Thêm sản phẩm mới
+                    </button>
+                </div>
+                <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>
             <div class="row">
@@ -498,6 +504,10 @@
                         });
                 }
             }
+        });
+
+        $(".addNewPopup").click(function (e) {
+            $("#addProductModal").modal('show');
         });
 
         $(".addNewProduct").click(function (e) {
