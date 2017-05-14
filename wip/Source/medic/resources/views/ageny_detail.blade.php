@@ -9,6 +9,8 @@
 
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <input id="startDateId" name="startDateId" type="hidden" value="{{$startDate->format('d/m/Y')}}">
+    <input id="endDateId" name="endDateId" type="hidden" value="{{$endDate->format('d/m/Y')}}">
     <div class="right_col" role="main">
         <div class="">
             <div class="page-title">
@@ -29,7 +31,7 @@
                             <div class="col-md-6 pull-right">
                                 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                    <span>April 01, 2014 - April 23, 2015</span> <b class="caret"></b>
+                                    <span>{{$startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y')}}</span> <b class="caret"></b>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -98,5 +100,16 @@
 
 @section('jsLib')
     <script src="{{ asset('vendors/bower_components/bootstrap-progressbar/bootstrap-progressbar.js') }}"></script>
+    <script>
+        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            console.log("reportrange apply");
+            var startDate = picker.startDate.format('DD/MM/YYYY');
+            var endDate = picker.endDate.format('DD/MM/YYYY');
+
+            var query = '?startDate=' + startDate + '&endDate=' + endDate;
+
+            location.href = '/agency/{{ $agency->id }}' + query;
+        });
+    </script>
 
 @endsection

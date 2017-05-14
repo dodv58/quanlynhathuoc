@@ -328,14 +328,15 @@ function init_daterangepicker() {
 
     var cb = function(start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
     };
 
+    var startDate = $('#startDateId').val();
+    var endDate = $('#endDateId').val();
+
     var optionSet1 = {
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment(),
-        minDate: '01/01/2012',
-        maxDate: '12/31/2015',
+        startDate: moment(startDate, 'DD/MM/YYYY'),
+        endDate: moment(endDate, 'DD/MM/YYYY'),
         dateLimit: {
             days: 60
         },
@@ -345,32 +346,32 @@ function init_daterangepicker() {
         timePickerIncrement: 1,
         timePicker12Hour: true,
         ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            'Hôm nay': [moment(), moment()],
+            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '7 ngày gần nhất': [moment().subtract(6, 'days'), moment()],
+            '30 ngày gần nhất': [moment().subtract(29, 'days'), moment()],
+            'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+            'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
         opens: 'left',
         buttonClasses: ['btn btn-default'],
         applyClass: 'btn-small btn-primary',
         cancelClass: 'btn-small',
-        format: 'MM/DD/YYYY',
+        format: 'DD/MM/YYYY',
         separator: ' to ',
         locale: {
-            applyLabel: 'Submit',
-            cancelLabel: 'Clear',
-            fromLabel: 'From',
-            toLabel: 'To',
-            customRangeLabel: 'Custom',
-            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            applyLabel: 'Chọn',
+            cancelLabel: 'Xóa',
+            fromLabel: 'Bắt đầu',
+            toLabel: 'Đến',
+            customRangeLabel: 'Tùy chỉnh',
+            daysOfWeek: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             firstDay: 1
         }
     };
 
-    $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+    // $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
     $('#reportrange').daterangepicker(optionSet1, cb);
     $('#reportrange').on('show.daterangepicker', function() {
         console.log("show event fired");
@@ -379,7 +380,7 @@ function init_daterangepicker() {
         console.log("hide event fired");
     });
     $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-        console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
+        console.log("apply event fired, start/end dates are " + picker.startDate.format('DD/MM/YYYY') + " to " + picker.endDate.format('DD/MM/YYYY'));
     });
     $('#reportrange').on('cancel.daterangepicker', function(ev, picker) {
         console.log("cancel event fired");
@@ -403,14 +404,15 @@ function init_daterangepicker_right() {
 
     var cb = function(start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
-        $('#reportrange_right span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        $('#reportrange_right span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
     };
 
+    var startDate = $('#startDateId').val();
+    var endDate = $('#endDateId').val();
+
     var optionSet1 = {
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment(),
-        minDate: '01/01/2012',
-        maxDate: '12/31/2020',
+        startDate: moment(startDate, 'DD/MM/YYYY'),
+        endDate: moment(endDate, 'DD/MM/YYYY'),
         dateLimit: {
             days: 60
         },
@@ -420,32 +422,32 @@ function init_daterangepicker_right() {
         timePickerIncrement: 1,
         timePicker12Hour: true,
         ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            'Hôm nay': [moment(), moment()],
+            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '7 ngày gần nhất': [moment().subtract(6, 'days'), moment()],
+            '30 ngày gần nhất': [moment().subtract(29, 'days'), moment()],
+            'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+            'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
         opens: 'right',
         buttonClasses: ['btn btn-default'],
         applyClass: 'btn-small btn-primary',
         cancelClass: 'btn-small',
-        format: 'MM/DD/YYYY',
+        format: 'DD/MM/YYYY',
         separator: ' to ',
         locale: {
-            applyLabel: 'Submit',
-            cancelLabel: 'Clear',
-            fromLabel: 'From',
-            toLabel: 'To',
-            customRangeLabel: 'Custom',
-            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            applyLabel: 'Chọn',
+            cancelLabel: 'Xóa',
+            fromLabel: 'Bắt đầu',
+            toLabel: 'Đến',
+            customRangeLabel: 'Tùy chỉnh',
+            daysOfWeek: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             firstDay: 1
         }
     };
 
-    $('#reportrange_right span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+    // $('#reportrange_right span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
     $('#reportrange_right').daterangepicker(optionSet1, cb);
 
@@ -456,7 +458,7 @@ function init_daterangepicker_right() {
         console.log("hide event fired");
     });
     $('#reportrange_right').on('apply.daterangepicker', function(ev, picker) {
-        console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
+        console.log("apply event fired, start/end dates are " + picker.startDate.format('DD/MM/YYYY') + " to " + picker.endDate.format('DD/MM/YYYY'));
     });
     $('#reportrange_right').on('cancel.daterangepicker', function(ev, picker) {
         console.log("cancel event fired");
@@ -523,7 +525,7 @@ function init_daterangepicker_reservation() {
         timePicker: true,
         timePickerIncrement: 30,
         locale: {
-            format: 'MM/DD/YYYY h:mm A'
+            format: 'DD/MM/YYYY h:mm A'
         }
     });
 

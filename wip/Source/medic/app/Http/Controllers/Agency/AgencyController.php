@@ -33,6 +33,16 @@ class AgencyController extends Controller
     }
 
     public function showAgency($id){
+        $startDateString = request('startDate');
+        $endDateString = request('endDate');
+        if ($startDateString == null || $endDateString == null) {
+            $startDate = Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+        } else {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDateString);
+            $endDate = Carbon::createFromFormat('d/m/Y', $endDateString);
+        }
+
         $agency = SubPharmacy::find($id);
         $employees = User::where('sub_pharmacy_id', $agency->id)->orderby('role')->get();
 
@@ -41,14 +51,14 @@ class AgencyController extends Controller
                 , DB::raw('YEAR(bill_exports.created_at) as year'), DB::raw('SUM(bill_exports.total_amount) as total'))
             ->where([
                 ['sub_pharmacies.id', '=', $id],
-                ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
-                ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
+                ['bill_exports.created_at', '>=', $startDate],
+                ['bill_exports.created_at', '<=', $endDate],
             ])
             ->groupBy('year', 'month', 'day')
             ->get();
 
         $totalSaleAmount = $totalSaleAmount->toArray();
-        $daysInMonth = $this->getDaysByMonth();
+        $daysInMonth = $this->getDays($startDate, $endDate);
         $data = [];
 
         foreach ($daysInMonth as $day) {
@@ -78,7 +88,7 @@ class AgencyController extends Controller
                 ],
             ])
             ->options([]);
-        return view('ageny_detail', compact('agency', 'employees', 'chartjs'));
+        return view('ageny_detail', compact('agency', 'employees', 'chartjs', 'startDate', 'endDate'));
     }
 
     public function addAgency(){
@@ -122,6 +132,18 @@ class AgencyController extends Controller
 
         for ($i = $start_time; $i < $end_time; $i += 86400) {
             $list[] = ['year' => $year, 'month' => $month, 'date' => date('d', $i), 'day' => date('D', $i)];
+        }
+
+        return $list;
+    }
+
+    private function getDays($start_date = null, $end_date = null) {
+        if ($start_date === null || $end_date === null) {
+            return null;
+        }
+
+        for ($i = $start_date->copy(); $i <= $end_date; $i->addDay()) {
+            $list[] = ['year' => $i->year, 'month' => $i->month , 'date' => $i->day, 'day' => $i->day];
         }
 
         return $list;

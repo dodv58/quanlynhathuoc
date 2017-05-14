@@ -30,8 +30,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         if (auth()->user()->role == 1) {
+            $startDateString = request('startDate');
+            $endDateString = request('endDate');
+            if ($startDateString == null || $endDateString == null) {
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfMonth();
+            } else {
+                $startDate = Carbon::createFromFormat('d/m/Y', $startDateString);
+                $endDate = Carbon::createFromFormat('d/m/Y', $endDateString);
+            }
 
             // tạo bảng sản phẩm sắp hết hàng
             $outStockProducts = Product::join('shipments', 'shipments.product_id', '=', 'products.id')
@@ -63,8 +72,8 @@ class HomeController extends Controller
                     'sub_pharmacies.name')
                 ->where([
                     ['sub_pharmacies.pharmacy_id', '=', Auth::user()->pharmacy_id],
-                    ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
-                    ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
+                    ['bill_exports.created_at', '>=', $startDate],
+                    ['bill_exports.created_at', '<=', $endDate],
                 ])
                 ->groupBy('sub_pharmacies.name')
                 ->get();
@@ -80,12 +89,12 @@ class HomeController extends Controller
                     , DB::raw('YEAR(bill_exports.created_at) as year'), DB::raw('SUM(bill_exports.total_amount) as total'))
                 ->where([
                     ['sub_pharmacies.pharmacy_id', '=', Auth::user()->pharmacy_id],
-                    ['bill_exports.created_at', '>=', Carbon::now()->startOfMonth()],
-                    ['bill_exports.created_at', '<=', Carbon::now()->endOfMonth()],
+                    ['bill_exports.created_at', '>=', $startDate],
+                    ['bill_exports.created_at', '<=', $endDate],
                 ])
                 ->groupBy('year', 'month', 'day')
                 ->get();
-            $daysInMonth = $this->getDaysByMonth();
+            $daysInMonth = $this->getDays($startDate, $endDate);
             $data = [];
             foreach ($daysInMonth as $day) {
                 $item = ['label' => $day['date'] . '/' . $day['month'], 'data' => 0];
@@ -117,7 +126,7 @@ class HomeController extends Controller
                 ->options([]);
 
             return view('overview', compact('chartjs', 'outStockProducts', 'expireProducts',
-                'revenueOfAgencies', 'totalRevenue'));
+                'revenueOfAgencies', 'totalRevenue', 'startDate', 'endDate'));
         } else {
             return redirect('/product/sale');
         }
@@ -174,6 +183,18 @@ class HomeController extends Controller
 
         for ($i = $start_time; $i < $end_time; $i += 86400) {
             $list[] = ['year' => $year, 'month' => $month, 'date' => date('d', $i), 'day' => date('D', $i)];
+        }
+
+        return $list;
+    }
+
+    private function getDays($start_date = null, $end_date = null) {
+        if ($start_date === null || $end_date === null) {
+            return null;
+        }
+
+        for ($i = $start_date->copy(); $i <= $end_date; $i->addDay()) {
+            $list[] = ['year' => $i->year, 'month' => $i->month , 'date' => $i->day, 'day' => $i->day];
         }
 
         return $list;

@@ -7,12 +7,10 @@
 {{--*/--}}
 
 @extends('layouts.app')
-@php
-    $startOfMonth = \Carbon\Carbon::now()->startOfMonth()->format('d/m/Y');
-    $endOfMonth = \Carbon\Carbon::now()->endOfMonth()->format('d/m/Y');
-@endphp
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <input id="startDateId" name="startDateId" type="hidden" value="{{$startDate->format('d/m/Y')}}">
+    <input id="endDateId" name="endDateId" type="hidden" value="{{$endDate->format('d/m/Y')}}">
     <div class="right_col" role="main">
 
         <div class="clearfix"></div>
@@ -26,7 +24,7 @@
                         <div class="col-md-6">
                             <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                <span>{{$startOfMonth . ' - ' . $endOfMonth}}</span> <b class="caret"></b>
+                                <span>{{$startDate->format('d/m/Y') . ' - ' . $endDate->format('d/m/Y')}}</span> <b class="caret"></b>
                             </div>
                         </div>
                     </div>
@@ -154,4 +152,17 @@
 
 @section('jsLib')
     <script src="{{ asset('vendors/bower_components/bootstrap-progressbar/bootstrap-progressbar.js') }}"></script>
+
+    <script>
+        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            console.log("reportrange apply");
+            var startDate = picker.startDate.format('DD/MM/YYYY');
+            var endDate = picker.endDate.format('DD/MM/YYYY');
+
+            var query = '?startDate=' + startDate + '&endDate=' + endDate;
+
+            location.href = '/home' + query;
+        });
+    </script>
 @endsection
+
