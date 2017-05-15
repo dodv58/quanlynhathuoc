@@ -31,7 +31,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-        if (auth()->user()->role == 1) {
+        if (auth()->user()->role == 0 || auth()->user()->role == 1) {
             $startDateString = request('startDate');
             $endDateString = request('endDate');
             if ($startDateString == null || $endDateString == null) {

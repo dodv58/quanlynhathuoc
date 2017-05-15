@@ -119,8 +119,8 @@
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" id="role" name="role" required="required">
-                                        <option value="manager">Nhân viên</option>
-                                        <option value="employee">Quản lý</option>
+                                        <option value="employee">Nhân viên</option>
+                                        <option value="manager">Quản lý</option>
                                     </select>
                                 </div>
                             </div>

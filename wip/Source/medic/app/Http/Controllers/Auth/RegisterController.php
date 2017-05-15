@@ -86,7 +86,7 @@ class RegisterController extends Controller
                 'address' => request('address'),
                 'phone' => request('phone'),
                 'password' => bcrypt(request('password')),
-                'role' => 1
+                'role' => 0 // 0 : chủ cửa hàng, 1 quản lý, 2 nhân viên bán hàng
             ]);
 
             auth()->login($user);

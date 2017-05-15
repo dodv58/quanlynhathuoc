@@ -26,7 +26,9 @@ class EmployeeController extends Controller
     public function employee()
     {
 
-        $users = User::where('pharmacy_id', auth()->user()->pharmacy_id)->get();
+        $users = User::where([
+            ['pharmacy_id','=', auth()->user()->pharmacy_id]
+            ,['role','!=', "0"]])->get(); // khác chủ của hàng
 
         return view('employee', compact('users'));
     }
@@ -50,6 +52,7 @@ class EmployeeController extends Controller
                 $newUser->name = request('name');
                 $newUser->address = request('address');
                 $newUser->phone = request('phone');
+                // 0 : chủ cửa hàng, 1 quản lý, 2 nhân viên bán hàng
                 if (request('role') == 'manager') {
                     $newUser->role = 1;
                 } else {
@@ -71,7 +74,7 @@ class EmployeeController extends Controller
     }
 
     public function editEmployee($account) {
-        if(auth()->user()->role != 1) {
+        if(auth()->user()->role != 0 && auth()->user()->role != 1) {
             return redirect()->home();
         }
 //        $user = new User;
@@ -81,7 +84,7 @@ class EmployeeController extends Controller
     }
 
     public function deleteEmployee($account){
-        if(auth()->user()->role != 1) {
+        if(auth()->user()->role != 0 && auth()->user()->role != 1) {
             return redirect()->home();
         }
         User::where('account', $account)->delete();
@@ -89,7 +92,7 @@ class EmployeeController extends Controller
     }
 
     public function updateEmployee($account){
-        if(auth()->user()->role != 1) {
+        if(auth()->user()->role != 0 && auth()->user()->role != 1) {
             return redirect()->home();
         }
         $user = User::where('account', $account)->first();
